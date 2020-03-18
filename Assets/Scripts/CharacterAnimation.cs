@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class CharacterAnimation : MonoBehaviour
 {
-	Animator anim;
-	public bool shooting;
-	public SpeedState state;
-	public enum SpeedState { Idle, Walking, Running }
-	void Start()
-	{
-		anim = GetComponent<Animator>();
-	}
+    private Animator anim;
+    public bool isShooting;
+    public SpeedState state;
 
-	void Update()
-	{
-		anim.SetBool("Shooting", shooting);
-		anim.SetInteger("MoveState", (int)state);
-	}
+    public enum SpeedState { Idle, Walking, Running }
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        anim.SetBool("Shooting", isShooting);
+        anim.SetInteger("MoveState", (int)state);
+    }
 }

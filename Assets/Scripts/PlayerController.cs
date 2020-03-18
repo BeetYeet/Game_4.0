@@ -6,22 +6,37 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterAnimation))]
 public class PlayerController : MonoBehaviour
 {
-    MyInputSystem input;
-    Vector2 move;
-    Vector2 aim;
+    private MyInputSystem input;
+    private Vector2 move;
+    private Vector2 aim;
 
-    public float speed;
-    public float rotationSpeed = 90f;
-    public bool shooting = false;
+    public float speed = 10f;
+    public float rotationSpeed = 900f;
+    public bool isShooting = false;
 
-    CharacterAnimation anim;
-    CharacterAnimation.SpeedState moveState = CharacterAnimation.SpeedState.Idle;
-
-    Rigidbody rigidBody;
+    private Rigidbody rigidBody;
+    public CharacterAnimation anim;
+    public ShootLaser laser;
+    public Fighting.WeaponHandler weapon;
+    private CharacterAnimation.SpeedState moveState = CharacterAnimation.SpeedState.Idle;
 
     private void Awake()
     {
-        anim = GetComponent<CharacterAnimation>();
+        if (anim == null)
+        {
+            Debug.LogError($"Unassigned CharacterAnimation script!\nat {gameObject.name}");
+            enabled = false;
+        }
+        if (laser == null)
+        {
+            Debug.LogError($"Unassigned ShootLaser script!\nat {gameObject.name}");
+            enabled = false;
+        }
+        if (weapon == null)
+        {
+            Debug.LogError($"Unassigned WeaponHandler script!\nat {gameObject.name}");
+            enabled = false;
+        }
         input = new MyInputSystem();
         input.PlayerActionControlls.ShootDirection.performed += OnLook;
         input.PlayerActionControlls.Move.performed += OnMove;
@@ -32,21 +47,24 @@ public class PlayerController : MonoBehaviour
     {
         input.Enable();
     }
+
     private void OnDisable()
     {
         input.Disable();
     }
 
-    void Update()
+    private void Update()
     {
-        shooting = aim.x != 0f || aim.y != 0f;
+        isShooting = aim.x != 0f || aim.y != 0f;
         HandleRotation();
         HandleMovement();
 
-        anim.shooting = shooting;
+        anim.isShooting = isShooting;
+        laser.isShooting = isShooting;
+        weapon.isShooting = isShooting;
         if (move != Vector2.zero)
         {
-            if (shooting)
+            if (isShooting)
             {
                 moveState = CharacterAnimation.SpeedState.Walking;
             }
@@ -64,13 +82,13 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed * (shooting ? 0.4f : 1f);
+        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed * (isShooting ? 0.4f : 1f);
     }
 
     private void HandleRotation()
     {
         Vector3 look = new Vector3(aim.x, 0, aim.y);
-        if (!shooting)
+        if (!isShooting)
         {
             MoveLook();
             return;
@@ -81,7 +99,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, rotationSpeed * Time.deltaTime);
     }
 
-    void MoveLook()
+    private void MoveLook()
     {
         if (move == Vector2.zero)
             return;
@@ -99,7 +117,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
         aim /= magnitude;
-        Debug.Log("Look");
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -112,7 +129,5 @@ public class PlayerController : MonoBehaviour
             return;
         }
         move /= magnitude;
-        Debug.Log("Move");
     }
-
 }
