@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     public float rotationSpeed = 900f;
     public bool isShooting = false;
+    private bool onTarget = false;
 
     private Rigidbody rigidBody;
     public CharacterAnimation anim;
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
         anim.isShooting = isShooting;
         laser.isShooting = isShooting;
-        weapon.isShooting = isShooting;
+        weapon.isShooting = isShooting && onTarget;
         if (move != Vector2.zero)
         {
             if (isShooting)
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviour
         Vector3 look = new Vector3(aim.x, 0, aim.y);
         if (!isShooting)
         {
+            onTarget = false;
             MoveLook();
             return;
         }
@@ -97,6 +99,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + look);
         Quaternion newRot = Quaternion.LookRotation(look, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, rotationSpeed * Time.deltaTime);
+        onTarget = Quaternion.Angle(transform.rotation, newRot) < .1f;
     }
 
     private void MoveLook()

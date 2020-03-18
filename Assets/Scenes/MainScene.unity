@@ -1505,6 +1505,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &2091090855 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1212336122, guid: d986feecbe1b49b4b8bdf59836253061,
+    type: 3}
+  m_PrefabInstance: {fileID: 9138556000847626920}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2134416080
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,6 +1629,42 @@ PrefabInstance:
     - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
       propertyPath: debugTime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[2].time
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[2].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[0].inSlope
+      value: 16.812668
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[0].outSlope
+      value: 16.812668
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[1].value
+      value: 0.09589947
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[1].inSlope
+      value: -6.4721417
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[1].outSlope
+      value: -6.4721417
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: intensityOverTime.m_Curve.Array.data[1].outWeight
+      value: 0.030464115
+      objectReference: {fileID: 0}
+    - target: {fileID: 271416181, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: timeCutoff
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1212336122, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.size
@@ -1916,6 +1958,10 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].outWeight
       value: 0.33333334
       objectReference: {fileID: 0}
+    - target: {fileID: 1212336122, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1005218977966481781, guid: d986feecbe1b49b4b8bdf59836253061,
         type: 3}
       propertyPath: m_Name
@@ -1976,5 +2022,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7974678557647609102, guid: d986feecbe1b49b4b8bdf59836253061,
+        type: 3}
+      propertyPath: particles
+      value: 
+      objectReference: {fileID: 2091090855}
+    - target: {fileID: 7974678557647609102, guid: d986feecbe1b49b4b8bdf59836253061,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: e2e0eb7e9fa65fc40acd5e7eaa02ce00,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d986feecbe1b49b4b8bdf59836253061, type: 3}

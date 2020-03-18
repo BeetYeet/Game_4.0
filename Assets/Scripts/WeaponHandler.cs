@@ -14,7 +14,7 @@ namespace Fighting
 
         private void Start()
         {
-            weapon.SetFirepoint(firepoint);
+            weapon.Initialize(firepoint);
             if (lightAnim == null)
             {
                 Debug.LogError($"Unassigned LightAnimation script!\nat {gameObject.name}");

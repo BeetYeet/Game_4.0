@@ -9,7 +9,7 @@ namespace Fighting
     {
         public float bulletVelocity;
 
-        internal override void Fire()
+        internal override void Fire(float overshotTime)
         {
             if (firepoint == null)
             {
@@ -28,11 +28,17 @@ namespace Fighting
             if (rigid != null)
             {
                 rigid.AddForce(firepoint.forward * bulletVelocity, ForceMode.VelocityChange);
+                b.transform.position += rigid.velocity * overshotTime;
             }
             else
             {
                 Debug.LogError($"Bullet prefab lacks Rigidbody, Please add one! prefab: {bullet.name}");
             }
+        }
+
+        internal override void Fire()
+        {
+            Fire(0f);
         }
     }
 }

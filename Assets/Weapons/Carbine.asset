@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0745c5f57ce372f449a5ca5e7a5ec85c, type: 3}
-  m_Name: AR-15
+  m_Name: Carbine
   m_EditorClassIdentifier: 
-  baseWeaponCooldown: 0.1
-  weaponDrawTime: 0.08
-  bullet: {fileID: 7866622897779745705, guid: 0ab4f40d5358b654da7815ebfec05127, type: 3}
+  baseWeaponCooldown: 1.5
+  weaponDrawTime: 0.1
+  bullet: {fileID: 7866622897779745705, guid: e552e885191da2649aa07bff9dbb15e5, type: 3}
   isShooting: 0
-  nextWeaponCooldown: 0.05
-  bulletVelocity: 30
+  nextWeaponCooldown: 1.5
+  bulletVelocity: 60
