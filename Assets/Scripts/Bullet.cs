@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     public string outOfPlayLayer = "Effect";
     public float outOfPlayMass = .01f;
 
+    public float firedTime;
+
     private void Start()
     {
     }

@@ -8,6 +8,12 @@ namespace Fighting
     public class WeaponInfoGeneric : WeaponInfo
     {
         public float bulletVelocity;
+        public float firerateVariance = 0.1f;
+
+        internal override void CalculateCooldown()
+        {
+            currentCooldown = baseWeaponCooldown * (1 + Random.Range(-firerateVariance, firerateVariance)); ;
+        }
 
         internal override void Fire(float overshotTime)
         {
@@ -24,10 +30,11 @@ namespace Fighting
             }
 
             GameObject b = Instantiate(bullet, firepoint.position, firepoint.rotation);
+            b.GetComponent<Bullet>().firedTime = Time.time - overshotTime;
             Rigidbody rigid = b.GetComponent<Rigidbody>();
             if (rigid != null)
             {
-                rigid.AddForce(firepoint.forward * bulletVelocity, ForceMode.VelocityChange);
+                rigid.velocity = firepoint.forward * bulletVelocity;
                 b.transform.position += rigid.velocity * overshotTime;
             }
             else

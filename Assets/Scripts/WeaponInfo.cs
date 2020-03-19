@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +16,6 @@ namespace Fighting
         [HideInInspector]
         public bool isShooting;
 
-        [HideInInspector]
-        public float nextWeaponCooldown;
-
         internal float drawTimeLeft = 0f;
 
         internal float fireTime = 0f;
@@ -25,42 +23,77 @@ namespace Fighting
 
         public event System.Action OnFire;
 
+        /// <summary>
+        /// Calculates the next cooldown of the gun, Do NOT call this multiple times for one bullet, instead look at the value of currentCooldown
+        /// </summary>
+        internal virtual void CalculateCooldown()
+        {
+            float cooldown = baseWeaponCooldown;
+            currentCooldown = cooldown;
+        }
+
+        public virtual void Reset()
+        {
+            firepoint = null;
+            currentCooldown = baseWeaponCooldown;
+        }
+
+        /// <summary>
+        /// the amount of cooldown time required to fire again
+        /// </summary>
+        internal float currentCooldown;
+
+        /// <summary>
+        /// Initialization for the script
+        /// </summary>
+        /// <param name="firepoint">The point in world space to spawn the bullets at</param>
         public virtual void Initialize(Transform firepoint)
         {
+            Reset();
             this.firepoint = firepoint;
-            nextWeaponCooldown = baseWeaponCooldown;
+            CalculateCooldown();
         }
 
         public virtual void Update()
         {
             fireTime += Time.deltaTime;
+            if (!isShooting && fireTime > currentCooldown)
+                fireTime = currentCooldown;
+
             if (isShooting)
             {
-                if (drawTimeLeft == 0f)
+                // wants to shoot
+                if (drawTimeLeft <= 0f)
                 {
-                    while (fireTime > nextWeaponCooldown)
+                    // weapon is drawn
+                    if (currentCooldown <= 0.0001f)
                     {
-                        float overshotTime = fireTime - nextWeaponCooldown;
-                        HandleFire(overshotTime);
-                        fireTime = overshotTime;
+                        Debug.LogError("Way too low cooldown, big no-no!");
+                        return;
+                    }
+                    while (fireTime > currentCooldown)
+                    {
+                        // weapon ready
+                        fireTime -= currentCooldown;
+                        HandleFire(fireTime);
                     }
                 }
                 else
                 {
+                    // player is trying to draw the weapon
                     drawTimeLeft -= Time.deltaTime;
-                    if (drawTimeLeft < 0f)
-                    {
-                        fireTime -= drawTimeLeft;
-                        drawTimeLeft = 0f;
-                    }
                 }
             }
             else
             {
-                if (fireTime > nextWeaponCooldown)
-                    fireTime = nextWeaponCooldown;
-                drawTimeLeft = weaponDrawTime;
+                ResetUpdate();
             }
+        }
+
+        internal virtual void ResetUpdate()
+        {
+            // weapon should not be drawn, holster it
+            drawTimeLeft = weaponDrawTime;
         }
 
         internal void HandleFire()
@@ -72,7 +105,7 @@ namespace Fighting
         {
             OnFire?.Invoke();
             Fire(overshotTime);
-            fireTime -= nextWeaponCooldown;
+            CalculateCooldown();
         }
 
         internal abstract void Fire();

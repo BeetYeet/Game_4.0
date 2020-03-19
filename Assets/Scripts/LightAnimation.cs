@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class LightAnimation : MonoBehaviour
 {
-    [Range(1, 10)]
-    public int layers = 3;
+    [Range(1, 30)]
+    public int layers = 5;
 
     public new Light light;
 

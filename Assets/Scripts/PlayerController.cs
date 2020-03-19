@@ -99,7 +99,10 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + look);
         Quaternion newRot = Quaternion.LookRotation(look, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, rotationSpeed * Time.deltaTime);
-        onTarget = Quaternion.Angle(transform.rotation, newRot) < .1f;
+        if (Quaternion.Angle(transform.rotation, newRot) < .1f)
+        {
+            onTarget = true;
+        }
     }
 
     private void MoveLook()
