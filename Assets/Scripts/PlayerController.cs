@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterAnimation))]
 public class PlayerController : MonoBehaviour
 {
+    public static GameObject player;
+    public static PlayerController playerController;
+
     private MyInputSystem input;
     private Vector2 move;
     private Vector2 aim;
@@ -23,6 +25,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (playerController != null)
+        {
+            Debug.LogError("Multiple players!");
+            enabled = false;
+            return;
+        }
+        player = gameObject;
+        playerController = this;
         if (anim == null)
         {
             Debug.LogError($"Unassigned CharacterAnimation script!\nat {gameObject.name}");

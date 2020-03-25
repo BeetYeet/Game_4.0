@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
 
     public string outOfPlayLayer = "Effect";
     public float outOfPlayMass = .01f;
+    public float lifetime = 20f;
 
     public float firedTime;
 
@@ -21,15 +22,21 @@ public class Bullet : MonoBehaviour
     {
         if (!inPlay)
             return;
+        GetComponent<Rigidbody>().AddForce(collision.relativeVelocity.magnitude * collision.GetContact(0).normal / 10f, ForceMode.VelocityChange);
+        Decay();
+    }
+
+    private void Decay()
+    {
         inPlay = false;
         gameObject.tag = "Untagged";
         gameObject.layer = LayerMask.NameToLayer(outOfPlayLayer);
         GetComponent<Rigidbody>().mass = outOfPlayMass;
-        GetComponent<Rigidbody>().AddForce(collision.relativeVelocity.magnitude * collision.GetContact(0).normal / 10f, ForceMode.VelocityChange);
     }
 
     private void Update()
     {
+        lifetime -= Time.deltaTime;
         if (!inPlay)
         {
             colorAlpha -= Time.deltaTime / decayTime;
@@ -40,5 +47,7 @@ public class Bullet : MonoBehaviour
             Color c = GetComponent<MeshRenderer>().material.GetColor("_BaseColor");
             GetComponent<MeshRenderer>().material.SetColor("_BaseColor", new Color(c.r, c.g, c.b, colorAlpha));
         }
+        else if (lifetime < 0f)
+            Decay();
     }
 }

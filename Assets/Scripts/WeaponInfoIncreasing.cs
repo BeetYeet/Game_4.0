@@ -15,11 +15,14 @@ namespace Fighting
         [Range(0.01f, 2f)]
         public float minCooldownFactor = 0.3f;
 
-        [Range(0.01f, 1f)]
+        [Range(0.001f, 1f)]
         public float bulletContribution = 0.05f;
 
         [Range(0f, 20f)]
         public float cooldownDecayTime = 3f;
+
+        [Range(1f, 10f)]
+        public float bulletContributionCurvature = 3f;
 
         internal float currentCooldownProgress = 0f;
 
@@ -30,9 +33,10 @@ namespace Fighting
             if (currentCooldownProgress > 1f)
                 currentCooldownProgress = 1f;
 
-            Debug.Log($"Heat: {currentCooldownProgress}");
+            cooldown = Mathf.Lerp(cooldown, cooldown * minCooldownFactor, Mathf.Pow(currentCooldownProgress, 1f / bulletContributionCurvature));
 
-            currentCooldown = Mathf.Lerp(cooldown, cooldown * minCooldownFactor, Mathf.Pow(currentCooldownProgress, 1 / 3f));
+            Debug.Log($"Heat: {currentCooldownProgress}\nCurrently at a firerate of: {1f / cooldown}");
+            currentCooldown = cooldown;
         }
 
         internal override void ResetUpdate()
@@ -64,12 +68,12 @@ namespace Fighting
                 return;
             }
 
-            GameObject b = Instantiate(bullet, firepoint.position, firepoint.rotation);
+            GameObject b = Instantiate(bullet, firepoint.position, GetInaccurateRotation());
             b.GetComponent<Bullet>().firedTime = Time.time - overshotTime;
             Rigidbody rigid = b.GetComponent<Rigidbody>();
             if (rigid != null)
             {
-                rigid.velocity = firepoint.forward * bulletVelocity;
+                rigid.velocity = b.transform.forward * bulletVelocity;
                 b.transform.position += rigid.velocity * overshotTime;
             }
             else

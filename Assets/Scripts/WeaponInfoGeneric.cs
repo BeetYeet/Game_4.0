@@ -29,12 +29,12 @@ namespace Fighting
                 return;
             }
 
-            GameObject b = Instantiate(bullet, firepoint.position, firepoint.rotation);
+            GameObject b = Instantiate(bullet, firepoint.position, GetInaccurateRotation());
             b.GetComponent<Bullet>().firedTime = Time.time - overshotTime;
             Rigidbody rigid = b.GetComponent<Rigidbody>();
             if (rigid != null)
             {
-                rigid.velocity = firepoint.forward * bulletVelocity;
+                rigid.velocity = b.transform.forward * bulletVelocity;
                 b.transform.position += rigid.velocity * overshotTime;
             }
             else

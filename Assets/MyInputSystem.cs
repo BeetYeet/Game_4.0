@@ -33,6 +33,22 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Cycle Weapon Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""4fa35d7d-0c48-4d74-8ffa-9c7a10963ca4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Cycle Weapon Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e6e1561-f728-4e9a-8d05-88d25a0c7f5c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -75,7 +91,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Shoot Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -86,7 +102,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Shoot Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -97,7 +113,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Shoot Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -108,7 +124,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Shoot Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -130,7 +146,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -141,7 +157,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -152,7 +168,7 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -163,10 +179,54 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2b2cc65-5d1e-480d-998f-476ade576526"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Cycle Weapon Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4aed3b71-090d-419f-ab8c-e6b736cadae1"",
+                    ""path"": ""<XInputController>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Cycle Weapon Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45f21f77-ea6f-494c-949b-0e8653692230"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Cycle Weapon Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfabb24b-6f7a-474b-9487-a6804acd9bdc"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Cycle Weapon Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +247,17 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -194,6 +265,8 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
         m_PlayerActionControlls = asset.FindActionMap("Player Action Controlls", throwIfNotFound: true);
         m_PlayerActionControlls_Move = m_PlayerActionControlls.FindAction("Move", throwIfNotFound: true);
         m_PlayerActionControlls_ShootDirection = m_PlayerActionControlls.FindAction("Shoot Direction", throwIfNotFound: true);
+        m_PlayerActionControlls_CycleWeaponRight = m_PlayerActionControlls.FindAction("Cycle Weapon Right", throwIfNotFound: true);
+        m_PlayerActionControlls_CycleWeaponLeft = m_PlayerActionControlls.FindAction("Cycle Weapon Left", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -245,12 +318,16 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
     private IPlayerActionControllsActions m_PlayerActionControllsActionsCallbackInterface;
     private readonly InputAction m_PlayerActionControlls_Move;
     private readonly InputAction m_PlayerActionControlls_ShootDirection;
+    private readonly InputAction m_PlayerActionControlls_CycleWeaponRight;
+    private readonly InputAction m_PlayerActionControlls_CycleWeaponLeft;
     public struct PlayerActionControllsActions
     {
         private @MyInputSystem m_Wrapper;
         public PlayerActionControllsActions(@MyInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerActionControlls_Move;
         public InputAction @ShootDirection => m_Wrapper.m_PlayerActionControlls_ShootDirection;
+        public InputAction @CycleWeaponRight => m_Wrapper.m_PlayerActionControlls_CycleWeaponRight;
+        public InputAction @CycleWeaponLeft => m_Wrapper.m_PlayerActionControlls_CycleWeaponLeft;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionControlls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +343,12 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                 @ShootDirection.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnShootDirection;
                 @ShootDirection.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnShootDirection;
                 @ShootDirection.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnShootDirection;
+                @CycleWeaponRight.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponRight;
+                @CycleWeaponRight.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponRight;
+                @CycleWeaponRight.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponRight;
+                @CycleWeaponLeft.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
+                @CycleWeaponLeft.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
+                @CycleWeaponLeft.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
             }
             m_Wrapper.m_PlayerActionControllsActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +359,12 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                 @ShootDirection.started += instance.OnShootDirection;
                 @ShootDirection.performed += instance.OnShootDirection;
                 @ShootDirection.canceled += instance.OnShootDirection;
+                @CycleWeaponRight.started += instance.OnCycleWeaponRight;
+                @CycleWeaponRight.performed += instance.OnCycleWeaponRight;
+                @CycleWeaponRight.canceled += instance.OnCycleWeaponRight;
+                @CycleWeaponLeft.started += instance.OnCycleWeaponLeft;
+                @CycleWeaponLeft.performed += instance.OnCycleWeaponLeft;
+                @CycleWeaponLeft.canceled += instance.OnCycleWeaponLeft;
             }
         }
     }
@@ -289,9 +378,20 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
             return asset.controlSchemes[m_ControllerSchemeIndex];
         }
     }
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
     public interface IPlayerActionControllsActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnShootDirection(InputAction.CallbackContext context);
+        void OnCycleWeaponRight(InputAction.CallbackContext context);
+        void OnCycleWeaponLeft(InputAction.CallbackContext context);
     }
 }

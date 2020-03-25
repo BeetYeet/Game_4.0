@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +10,9 @@ namespace Fighting
         public float baseWeaponCooldown;
         public float weaponDrawTime = .2f;
         public GameObject bullet;
+
+        [Range(0f, 90f)]
+        public float inaccuracyAngle = .1f;
 
         // Internal things
         [HideInInspector]
@@ -36,6 +38,11 @@ namespace Fighting
         {
             firepoint = null;
             currentCooldown = baseWeaponCooldown;
+        }
+
+        internal virtual Quaternion GetInaccurateRotation()
+        {
+            return firepoint.rotation * Quaternion.Euler(Random.Range(-inaccuracyAngle, inaccuracyAngle) / 3f, Random.Range(-inaccuracyAngle, inaccuracyAngle), 0f);
         }
 
         /// <summary>

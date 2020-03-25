@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15466f2681ae6a44bab7ae0a61c3b2fe, type: 3}
   m_Name: Minigun
   m_EditorClassIdentifier: 
-  baseWeaponCooldown: 0.25
+  baseWeaponCooldown: 0.05
   weaponDrawTime: 0.3
   bullet: {fileID: 7866622897779745705, guid: 0ab4f40d5358b654da7815ebfec05127, type: 3}
+  inaccuracyAngle: 2.4
   isShooting: 0
-  bulletVelocity: 40
+  bulletVelocity: 60
   firerateVariance: 0
-  minCooldownFactor: 0.1
-  bulletContribution: 0.05
+  minCooldownFactor: 0.2
+  bulletContribution: 0.005
   cooldownDecayTime: 3
+  bulletContributionCurvature: 1

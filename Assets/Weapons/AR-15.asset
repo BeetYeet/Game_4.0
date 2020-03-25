@@ -15,6 +15,7 @@ MonoBehaviour:
   baseWeaponCooldown: 0.2
   weaponDrawTime: 0.05
   bullet: {fileID: 7866622897779745705, guid: 0ab4f40d5358b654da7815ebfec05127, type: 3}
+  inaccuracyAngle: 5
   isShooting: 0
-  bulletVelocity: 60
+  bulletVelocity: 45
   firerateVariance: 0.05

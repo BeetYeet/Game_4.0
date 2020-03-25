@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,13 @@ namespace Fighting
         {
             weapon.isShooting = isShooting;
             weapon.Update();
+        }
+
+        public void SetWeapon(WeaponInfo newWeapon)
+        {
+            weapon.Reset();
+            weapon = newWeapon;
+            newWeapon.Initialize(firepoint);
         }
     }
 }
