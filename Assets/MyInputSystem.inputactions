@@ -36,6 +36,22 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Heal",
+                    "type": "Button",
+                    "id": "a7f691c4-dc06-4fe2-a9bf-e432d567d4f1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TakeDamage",
+                    "type": "Button",
+                    "id": "42f9ffca-bf08-4f02-8277-eb7abe935bfa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -44,7 +60,7 @@
                     "id": "2ddea231-1688-4d2b-ad4b-6d2576ca08e3",
                     "path": "<XInputController>/leftStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "groups": "Controller",
                     "action": "Move",
                     "isComposite": false,
@@ -55,7 +71,7 @@
                     "id": "21a4a2e8-1183-4a5b-9df3-31d895ef4ffe",
                     "path": "<XInputController>/rightStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "groups": "Controller",
                     "action": "Shoot Direction",
                     "isComposite": false,
@@ -212,6 +228,28 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Cycle Weapon Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "978735bd-7a0e-4acd-8efb-9af67b73c39f",
+                    "path": "<Keyboard>/numpadPlus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Heal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6336bf36-4315-45ee-9171-cb01ab34d105",
+                    "path": "<Keyboard>/numpadMinus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "TakeDamage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

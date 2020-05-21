@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 using UnityEngine.InputSystem;
+using TMPro;
+using System;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class Inventory : MonoBehaviour
     public WeaponHandler weaponHandler;
 
     private MyInputSystem input;
+
+    private TextMeshProUGUI weaponNameUI;
 
     private void Awake()
     {
@@ -24,9 +28,16 @@ public class Inventory : MonoBehaviour
             Debug.LogError($"Arsenal list null!\nat {gameObject.name}");
             enabled = false;
         }
+        try
+        {
+            weaponNameUI = GameObject.FindWithTag("Weapon Name UI").GetComponent<TextMeshProUGUI>();
+        }
+        catch (System.NullReferenceException _) { }
+
         input = new MyInputSystem();
         input.PlayerActionControlls.CycleWeaponRight.started += OnCycleWeaponRight;
         input.PlayerActionControlls.CycleWeaponLeft.started += OnCycleWeaponLeft;
+        UpdateWeaponName();
     }
 
     private void Update()
@@ -41,6 +52,15 @@ public class Inventory : MonoBehaviour
         arsenal.Remove(weapon);
         arsenal.Add(weapon);
         weaponHandler.SetWeapon(arsenal[0]);
+        UpdateWeaponName();
+    }
+
+    private void UpdateWeaponName()
+    {
+        if (weaponNameUI == null)
+            return;
+
+        weaponNameUI.text = weaponHandler.weapon.name;
     }
 
     public void OnCycleWeaponLeft(InputAction.CallbackContext ctx)
@@ -51,6 +71,7 @@ public class Inventory : MonoBehaviour
         arsenal.Remove(weapon);
         arsenal.Insert(0, weapon);
         weaponHandler.SetWeapon(weapon);
+        UpdateWeaponName();
     }
 
     private void OnEnable()

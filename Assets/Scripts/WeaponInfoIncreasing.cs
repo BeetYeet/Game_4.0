@@ -69,7 +69,7 @@ namespace Fighting
             }
 
             GameObject b = Instantiate(bullet, firepoint.position, GetInaccurateRotation());
-            b.GetComponent<Bullet>().firedTime = Time.time - overshotTime;
+            AssignValuesToBullet(overshotTime, b);
             Rigidbody rigid = b.GetComponent<Rigidbody>();
             if (rigid != null)
             {

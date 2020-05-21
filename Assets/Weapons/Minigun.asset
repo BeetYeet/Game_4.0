@@ -1,25 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15466f2681ae6a44bab7ae0a61c3b2fe, type: 3}
-  m_Name: Minigun
-  m_EditorClassIdentifier: 
-  baseWeaponCooldown: 0.05
-  weaponDrawTime: 0.3
-  bullet: {fileID: 7866622897779745705, guid: 0ab4f40d5358b654da7815ebfec05127, type: 3}
-  inaccuracyAngle: 2.4
-  isShooting: 0
-  bulletVelocity: 60
-  firerateVariance: 0
-  minCooldownFactor: 0.2
-  bulletContribution: 0.005
-  cooldownDecayTime: 3
-  bulletContributionCurvature: 1
+version https://git-lfs.github.com/spec/v1
+oid sha256:eb3e0201bc0d4d1e6611f7b4213b8f8c621c89173ea46d84352e6d8c5341ac75
+size 738

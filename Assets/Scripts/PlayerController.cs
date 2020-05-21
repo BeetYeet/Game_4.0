@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Controll;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Controll.CharacterController
 {
     public static GameObject player;
     public static PlayerController playerController;
@@ -14,14 +15,11 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 10f;
     public float rotationSpeed = 900f;
-    public bool isShooting = false;
     private bool onTarget = false;
 
     private Rigidbody rigidBody;
-    public CharacterAnimation anim;
     public ShootLaser laser;
     public Fighting.WeaponHandler weapon;
-    private CharacterAnimation.SpeedState moveState = CharacterAnimation.SpeedState.Idle;
 
     private void Awake()
     {
@@ -33,11 +31,6 @@ public class PlayerController : MonoBehaviour
         }
         player = gameObject;
         playerController = this;
-        if (anim == null)
-        {
-            Debug.LogError($"Unassigned CharacterAnimation script!\nat {gameObject.name}");
-            enabled = false;
-        }
         if (laser == null)
         {
             Debug.LogError($"Unassigned ShootLaser script!\nat {gameObject.name}");
@@ -66,40 +59,38 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        isShooting = aim.x != 0f || aim.y != 0f;
+        isAttacking = aim.x != 0f || aim.y != 0f;
         HandleRotation();
         HandleMovement();
 
-        anim.isShooting = isShooting;
-        laser.isShooting = isShooting;
-        weapon.isShooting = isShooting && onTarget;
+        laser.isShooting = isAttacking;
+        weapon.isShooting = isAttacking && onTarget;
         if (move != Vector2.zero)
         {
-            if (isShooting)
+            if (isAttacking)
             {
-                moveState = CharacterAnimation.SpeedState.Walking;
+                moveState = SpeedState.Walking;
             }
             else
             {
-                moveState = CharacterAnimation.SpeedState.Running;
+                moveState = SpeedState.Running;
             }
         }
         else
         {
-            moveState = CharacterAnimation.SpeedState.Idle;
+            moveState = SpeedState.Idle;
         }
-        anim.state = moveState;
     }
 
     private void HandleMovement()
     {
-        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed * (isShooting ? 0.4f : 1f);
+        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed * (isAttacking ? 0.4f : 1f);
     }
 
     private void HandleRotation()
     {
         Vector3 look = new Vector3(aim.x, 0, aim.y);
-        if (!isShooting)
+        if (!isAttacking)
         {
             onTarget = false;
             MoveLook();

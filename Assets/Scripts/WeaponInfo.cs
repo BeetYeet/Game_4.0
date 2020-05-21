@@ -14,6 +14,10 @@ namespace Fighting
         [Range(0f, 90f)]
         public float inaccuracyAngle = .1f;
 
+        public float damage = 5f;
+        public float armorPenetration = 1f;
+        public bool kinetic = false;
+
         // Internal things
         [HideInInspector]
         public bool isShooting;
@@ -42,7 +46,7 @@ namespace Fighting
 
         internal virtual Quaternion GetInaccurateRotation()
         {
-            return firepoint.rotation * Quaternion.Euler(Random.Range(-inaccuracyAngle, inaccuracyAngle) / 3f, Random.Range(-inaccuracyAngle, inaccuracyAngle), 0f);
+            return firepoint.rotation * Quaternion.Euler(Mathf.Clamp(Random.Range(-inaccuracyAngle, inaccuracyAngle) / 3f, -10f, 10f), Random.Range(-inaccuracyAngle, inaccuracyAngle), 0f);
         }
 
         /// <summary>
@@ -118,5 +122,14 @@ namespace Fighting
         internal abstract void Fire();
 
         internal abstract void Fire(float overshotTime);
+
+        internal virtual void AssignValuesToBullet(float overshotTime, GameObject bullet)
+        {
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            bulletScript.firedTime = Time.time - overshotTime;
+            bulletScript.damage = damage;
+            bulletScript.armorPenetration = armorPenetration;
+            bulletScript.kinetic = kinetic;
+        }
     }
 }

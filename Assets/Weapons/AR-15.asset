@@ -1,21 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0745c5f57ce372f449a5ca5e7a5ec85c, type: 3}
-  m_Name: AR-15
-  m_EditorClassIdentifier: 
-  baseWeaponCooldown: 0.2
-  weaponDrawTime: 0.05
-  bullet: {fileID: 7866622897779745705, guid: 0ab4f40d5358b654da7815ebfec05127, type: 3}
-  inaccuracyAngle: 5
-  isShooting: 0
-  bulletVelocity: 45
-  firerateVariance: 0.05
+version https://git-lfs.github.com/spec/v1
+oid sha256:db99609415589569a7cf91e93bf23cdb5ecb7a1f8503cf685ac9838f95ccefbd
+size 649
