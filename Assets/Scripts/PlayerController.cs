@@ -59,6 +59,13 @@ public class PlayerController : Controll.CharacterController
 
     private void Update()
     {
+        if (!GameController.instance.playing)
+        {
+            isAttacking = false;
+            laser.isShooting = false;
+            weapon.isShooting = false;
+            return;
+        }
         isAttacking = aim.x != 0f || aim.y != 0f;
         HandleRotation();
         HandleMovement();
@@ -84,7 +91,25 @@ public class PlayerController : Controll.CharacterController
 
     private void HandleMovement()
     {
-        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed * (isAttacking ? 0.4f : 1f);
+        rigidBody.velocity = new Vector3(move.x, 0, move.y) * speed;
+        switch (SettingsHandler.cache.dificulty)
+        {
+            case Difficulty.Easy:
+                rigidBody.velocity *= (isAttacking ? 0.6f : 1f);
+                break;
+
+            default:
+                rigidBody.velocity *= (isAttacking ? 0.4f : 1f);
+                break;
+
+            case Difficulty.Hard:
+                rigidBody.velocity *= (isAttacking ? 0.35f : 1f);
+                break;
+
+            case Difficulty.Extreme:
+                rigidBody.velocity *= (isAttacking ? 0.3f : .9f);
+                break;
+        }
     }
 
     private void HandleRotation()

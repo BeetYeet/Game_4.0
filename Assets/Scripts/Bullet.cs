@@ -26,6 +26,8 @@ public class Bullet : MonoBehaviour
 
     private Rigidbody rb;
 
+    private const bool debug = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -68,9 +70,9 @@ public class Bullet : MonoBehaviour
         zombieHealth.Damage(damage + armorPenetration);
         damage -= Mathf.Clamp(health - armorPenetration, 0f, Mathf.Infinity);
         if (damage > 0f)
-            Debug.Log("Bullet Pierced");
+            if(debug) Debug.Log("Bullet Pierced");
         else
-            Debug.Log("Bullet Bounced");
+            if(debug) Debug.Log("Bullet Bounced");
     }
 
     private void Decay()

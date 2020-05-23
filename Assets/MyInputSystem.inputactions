@@ -38,17 +38,41 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Heal",
+                    "name": "Restart",
                     "type": "Button",
-                    "id": "a7f691c4-dc06-4fe2-a9bf-e432d567d4f1",
+                    "id": "dab00d37-1036-40f6-a443-6ce68b6f0b39",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
                 {
-                    "name": "TakeDamage",
+                    "name": "Menu",
                     "type": "Button",
-                    "id": "42f9ffca-bf08-4f02-8277-eb7abe935bfa",
+                    "id": "cc040df0-74e5-4131-9eec-7cbe4cee09b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DeleteHighscores",
+                    "type": "Button",
+                    "id": "3121df20-d7ff-4b37-a30e-78bb3fb7ade8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Keyboard Submit",
+                    "type": "Button",
+                    "id": "8d839716-29cc-41ef-ba57-65ddc061f7b7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Keyboard Discard",
+                    "type": "Button",
+                    "id": "54ad77d8-be92-4e65-857d-438679b477f3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -233,23 +257,122 @@
                 },
                 {
                     "name": "",
-                    "id": "978735bd-7a0e-4acd-8efb-9af67b73c39f",
-                    "path": "<Keyboard>/numpadPlus",
+                    "id": "596c4c7f-1ac8-4212-b43a-a9d3957aed98",
+                    "path": "<XInputController>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Heal",
+                    "groups": "Controller",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "6336bf36-4315-45ee-9171-cb01ab34d105",
-                    "path": "<Keyboard>/numpadMinus",
+                    "id": "04e3075f-ba13-40a7-b061-f1ae97195b10",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "TakeDamage",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0704f3fa-2a00-4012-accc-2f125744355f",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f21c9ba-0144-41de-b517-17dc4d6ae667",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09f607e7-4a95-4522-9251-766f6ae0e6a8",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b60292a5-afbf-4b70-ab46-f5d3c947f953",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "DeleteHighscores",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7152787-e5ab-492c-9f2e-0e75e9611c2e",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "DeleteHighscores",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fad0adf2-5704-4948-a544-a4bf2ec37da5",
+                    "path": "<Keyboard>/delete",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteHighscores",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f256de6-03bc-493c-a2c0-a987395ffd2d",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Keyboard Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c35d8a8e-7816-46ee-ad1e-c917ea09150d",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Keyboard Discard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2397c6cf-4253-4f73-991e-b20f3bedd414",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Keyboard Discard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

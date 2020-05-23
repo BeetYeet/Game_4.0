@@ -18,6 +18,9 @@ public class HighscoreEntry : MonoBehaviour
     private TextMeshProUGUI nameText;
 
     [SerializeField]
+    private TextMeshProUGUI difficultyText;
+
+    [SerializeField]
     private TextMeshProUGUI timeTakenText;
 
     [SerializeField]
@@ -57,6 +60,11 @@ public class HighscoreEntry : MonoBehaviour
             positionText.text = "#" + index.ToString("D4");
         scoreText.text = entry.score.ToString("D7");
         nameText.text = entry.name;
+
+        if (entry.difficulty == Difficulty.Hard && (entry.name == "PP" || entry.name == "PEEPEE" || entry.name == "PEPE"))
+            difficultyText.text = "SOFT";
+        else
+            difficultyText.text = entry.difficulty.ToString().ToUpper();
         if (!isMenuEntry)
             killsText.text = entry.kills.ToString("D5");
         else

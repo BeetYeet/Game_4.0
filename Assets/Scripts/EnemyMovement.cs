@@ -23,6 +23,8 @@ public class EnemyMovement : Controll.CharacterController
 
     public event System.Action OnStopAttack;
 
+    public const bool debug = false;
+
     public bool Stunned
     {
         get { return stunDuration > 0f; ; }
@@ -34,13 +36,13 @@ public class EnemyMovement : Controll.CharacterController
     private void StartAttack()
     {
         agent.isStopped = true;
-        Debug.Log("Started attacking");
+        if (debug) Debug.Log("Started attacking");
     }
 
     private void StopAttack()
     {
         agent.isStopped = false;
-        Debug.Log("Stopped attacking");
+        if (debug) Debug.Log("Stopped attacking");
     }
 
     private void Start()
@@ -52,14 +54,7 @@ public class EnemyMovement : Controll.CharacterController
 
     public void Stun(float duration)
     {
-        if (Stunned)
-        {
-            stunDuration += duration / 2f;
-        }
-        else
-        {
-            stunDuration += duration;
-        }
+        stunDuration += duration;
     }
 
     private void Update()
@@ -67,7 +62,7 @@ public class EnemyMovement : Controll.CharacterController
         agent.destination = player.transform.position;
         if (Vector3.Distance(transform.position, player.transform.position) < attackDistance)
         {
-            //Debug.Log("Attacking");
+            //if(debug) Debug.Log("Attacking");
             bool wasAttacking = isAttacking;
             isAttacking = true;
             if (!wasAttacking)
@@ -77,7 +72,7 @@ public class EnemyMovement : Controll.CharacterController
         }
         else
         {
-            //Debug.Log("Not attacking");
+            //if(debug) Debug.Log("Not attacking");
             bool wasAttacking = isAttacking;
             isAttacking = false;
             if (wasAttacking)
@@ -101,6 +96,23 @@ public class EnemyMovement : Controll.CharacterController
             {
                 moveState = SpeedState.Running;
                 agent.speed = speed;
+            }
+            switch (SettingsHandler.cache.dificulty)
+            {
+                case Difficulty.Easy:
+                    agent.speed *= .8f;
+                    break;
+
+                default:
+                    break;
+
+                case Difficulty.Hard:
+                    agent.speed *= 1.1f;
+                    break;
+
+                case Difficulty.Extreme:
+                    agent.speed *= 1.2f;
+                    break;
             }
         }
         stunDuration -= Time.deltaTime;

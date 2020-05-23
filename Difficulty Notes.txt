@@ -1,0 +1,25 @@
+Easy: 10% score multiplier
+  20% slower --
+  deal 50% damage --
+  take 150% damage --
+  player healing doubled
+  player shooting speed penalty lessened (60%) --
+  50% spawn rate
+
+Normal: 100% score multiplier
+  normal --
+
+Hard: 130% score multiplier
+  10% faster --
+  deal 150% damage --
+  take 90% damage --
+  player shooting speed penalty increased (35%) --
+  110% spawn rate
+
+Extreme: 200% score multiplier
+  20% faster --
+  deal 300% damage --
+  take 80% damage --
+  player shooting speed penalty further increased (30%) --
+  player base movement speed decreased (90%) --
+  150% spawn rate

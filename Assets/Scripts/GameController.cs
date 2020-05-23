@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using Tools;
+using UnityEngine.EventSystems;
 
 public class GameController : MonoBehaviour
 {
@@ -22,18 +22,6 @@ public class GameController : MonoBehaviour
     private Button nameDiscardButton;
 
     [SerializeField]
-    private Button deleteHighscoresButton;
-
-    [SerializeField]
-    private Button menuButton;
-
-    [SerializeField]
-    private Button restartButton;
-
-    [SerializeField]
-    private TextMeshProUGUI deleteHighscoresText;
-
-    [SerializeField]
     private GameObject playingUI;
 
     [SerializeField]
@@ -43,18 +31,34 @@ public class GameController : MonoBehaviour
     private CanvasGroup nameSubmitCanvasGroup;
 
     [SerializeField]
-    private GameObject highscoresUI;
-
-    [SerializeField]
-    private Transform highscoresArea;
-
-    [SerializeField]
-    private GameObject highscoreEntryPrefab;
-
-    [SerializeField]
     private GameObject deathVideo;
 
-    public int Score { get { return Mathf.FloorToInt(score); } }
+    [SerializeField]
+    private Button keyFirstSelected = null;
+
+    [SerializeField]
+    private RectTransform controllerKeyboard = null;
+
+    public int Score
+    {
+        get
+        {
+            switch (difficulty)
+            {
+                case Difficulty.Easy:
+                    return Mathf.FloorToInt(score * .1f);
+
+                default:
+                    return Mathf.FloorToInt(score);
+
+                case Difficulty.Hard:
+                    return Mathf.FloorToInt(score * 1.3f);
+
+                case Difficulty.Extreme:
+                    return Mathf.FloorToInt(score * 2f);
+            }
+        }
+    }
 
     [SerializeField]
     private float score = 0f;
@@ -65,16 +69,29 @@ public class GameController : MonoBehaviour
     public int kills = 0;
 
     public List<ScoreEntry> highscores;
-    private int numHighscores;
-
-    private bool isSureAboutClear = false;
-    private bool isClearing = false;
-
-    [SerializeField]
-    private string menuName = "Main Menu";
+    public int numHighscores { get; private set; }
 
     [SerializeField]
     private bool debugMode = false;
+
+    [SerializeField]
+    private bool isHighscoreScene = false;
+
+    private MyInputSystem input = null;
+
+    private Difficulty difficulty = Difficulty.Normal;
+
+    [SerializeField]
+    private GameObject ammoBox = null;
+
+    [Range(0f, 1f), SerializeField]
+    private float ammoRate = .5f;
+
+    [SerializeField]
+    private GameObject healthBox = null;
+
+    [Range(0f, 1f), SerializeField]
+    private float healthRate = .5f;
 
     private void Awake()
     {
@@ -84,18 +101,82 @@ public class GameController : MonoBehaviour
             return;
         }
         instance = this;
-        nameConfirmButton.onClick.AddListener(delegate { OnSubmit(nameInput.text); });
-        nameInput.onEndEdit.AddListener(OnSubmit);
+        numHighscores = PlayerPrefs.GetInt("numHighscores", 0);
 
-        nameInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
-        nameInput.onValidateInput += ValidateName;
+        if (!isHighscoreScene)
+        {
+            nameConfirmButton.onClick.AddListener(delegate { OnSubmit(nameInput.text); });
+            nameInput.onEndEdit.AddListener(OnSubmit);
 
-        nameDiscardButton.onClick.AddListener(OnDiscard);
+            nameInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
+            nameInput.onValidateInput += ValidateName;
 
-        deleteHighscoresButton.onClick.AddListener(delegate { CheckReset(); });
+            nameDiscardButton.onClick.AddListener(OnDiscard);
 
-        restartButton.onClick.AddListener(() => { SceneManager.LoadScene(SceneManager.GetActiveScene().name); });
-        menuButton.onClick.AddListener(delegate { SceneHandler.instance.LoadScene(menuName); });
+            Time.timeScale = 1f;
+        }
+
+        SettingsHandler.ReadToCache();
+        difficulty = SettingsHandler.cache.dificulty;
+
+        input = new MyInputSystem();
+        input.PlayerActionControlls.Menu.performed += Menu_performed;
+    }
+
+    private void Menu_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (playing)
+        {
+            //TODO: pause menu
+            if (Time.timeScale == 0f)
+            {
+                Time.timeScale = 1f;
+            }
+            else
+                Time.timeScale = 0f;
+        }
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+    }
+
+    public void AddCharacter(string character)
+    {
+        if (nameInput.text.Length < 6)
+            nameInput.text += character[0];
+    }
+
+    public void RemoveCharacter()
+    {
+        string s = nameInput.text;
+        string ns = "";
+        for (int i = 0; i < s.Length - 1; i++)
+        {
+            ns += s[i];
+        }
+        nameInput.text = ns;
+    }
+
+    public bool GetPartialScores()
+    {
+        if (highscores == null)
+            highscores = new List<ScoreEntry>();
+        int toGo = Mathf.Clamp(numHighscores - highscores.Count, 0, 3);
+
+        for (int i = 0; i < toGo; i++)
+        {
+            highscores.Add(ScoreEntry.Read(highscores.Count));
+        }
+        if (toGo != 0)
+            return true;
+        return false;
     }
 
     private char ValidateName(string text, int charIndex, char added)
@@ -116,82 +197,27 @@ public class GameController : MonoBehaviour
             score += Time.deltaTime * 10f;
     }
 
-    private void CheckReset()
-    {
-        if (!isClearing)
-        {
-            if (!isSureAboutClear)
-            {
-                isSureAboutClear = true;
-                deleteHighscoresText.text = "Are you sure?";
-            }
-            else
-            {
-                isSureAboutClear = false;
-                deleteHighscoresText.text = "Click to cancel";
-                ResetHighscores();
-                deleteHighscoresButton.onClick.RemoveListener(delegate { CheckReset(); });
-            }
-        }
-        else
-        {
-            isClearing = false;
-            isSureAboutClear = false;
-            deleteHighscoresText.text = "Canceled";
-        }
-    }
-
-    private void ResetHighscores()
-    {
-        StartCoroutine(RemoveHighscores());
-    }
-
-    private IEnumerator RemoveHighscores()
-    {
-        isClearing = true;
-        float time = 0f;
-        while (highscoresArea.childCount > 0 && isClearing)
-        {
-            while (time > 0)
-            {
-                yield return null;
-                time -= Time.deltaTime;
-            }
-            Destroy(highscoresArea.GetChild(0).gameObject);
-            SetScrollSize();
-            time += 0.1f;
-        }
-        if (isClearing)
-        {
-            isClearing = false;
-            PlayerPrefs.DeleteAll();
-            deleteHighscoresText.text = "Cleared";
-            yield return new WaitForSeconds(3.5f);
-            deleteHighscoresText.text = "Clear Highscores";
-        }
-        else
-        {
-            for (int i = 0; i < highscoresArea.childCount; i++)
-            {
-                Destroy(highscoresArea.GetChild(i).gameObject);
-            }
-            DisplayHighscores();
-            yield return new WaitForSeconds(3.5f);
-            deleteHighscoresText.text = "Clear Highscores";
-        }
-    }
-
-    public void OnEnemyDie()
+    public void OnEnemyDie(Vector3 pos)
     {
         kills++;
         score += 100f;
+
+        if (Random.value < healthRate)
+        {
+            Instantiate(healthBox, pos, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+        }
+        else if (Random.value < ammoRate)
+        {
+            Instantiate(ammoBox, pos, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+        }
     }
 
     public void OnRunEnd()
     {
         // do death things here
         playing = false;
-        if (!debugMode)
+        Time.timeScale = .2f;
+        if (!debugMode && SettingsHandler.cache.youDiedEnabled)
         {
             deathVideo = Instantiate(deathVideo);
             StartCoroutine(FadeInScoreUI());
@@ -205,14 +231,37 @@ public class GameController : MonoBehaviour
         time = Time.timeSinceLevelLoad;
         playingUI.SetActive(false);
         nameSubmitUI.SetActive(true);
+
+        if (SettingsHandler.cache.showControllerKeyboard)
+        {
+            controllerKeyboard.gameObject.SetActive(true);
+            keyFirstSelected.Select();
+            keyFirstSelected.OnSelect(new BaseEventData(EventSystem.current));
+        }
+        else
+            nameInput.Select();
+
+        if (SettingsHandler.cache.preloadHighscores)
+        {
+            highscores.Sort();
+            ReadInHighscores();
+        }
     }
 
     private void OnSubmit(string name)
     {
         if (name == "" || name == null)
-            return;
+            return; // TODO: tell user name cant be blank
         playerName = name;
-        AddScore(ScoreEntry.New(Score, playerName, time, kills));
+        ScoreEntry newScore = ScoreEntry.New(Score, playerName, SettingsHandler.cache.dificulty, time, kills);
+        AddScore(newScore);
+
+        highscores.Sort();
+
+        if (SettingsHandler.cache.preloadHighscores)
+        {
+            HighscoreHandler.instance.AddNew(newScore);
+        }
 
         DisplayHighscores();
         ResetLastTracker();
@@ -231,32 +280,37 @@ public class GameController : MonoBehaviour
     private void DisplayHighscores()
     {
         nameSubmitUI.SetActive(false);
-        highscoresUI.SetActive(true);
+        HighscoreHandler.instance.Enable();
 
-        highscores.Sort();
-
-        for (int i = 0; i < highscores.Count; i++)
+        if (!SettingsHandler.cache.preloadHighscores)
         {
-            InstantiateEntry(i);
+            highscores.Sort();
+            ReadInHighscores();
         }
-        SetScrollSize();
     }
 
-    private void SetScrollSize()
+    private void ReadInHighscores()
     {
-        highscoresArea.GetComponent<RectTransform>().sizeDelta = new Vector2(highscoresArea.GetComponent<RectTransform>().sizeDelta.x, highscoreEntryPrefab.GetComponent<RectTransform>().rect.height * highscoresArea.childCount - highscoresArea.GetComponent<RectTransform>().rect.height);
+        SceneHandler.instance.haltTransitionIn++;
+        HighscoreHandler.instance.Display();
+        if (!SettingsHandler.cache.preloadHighscores)
+            StartCoroutine(UpdateHighscoreProgress());
     }
 
-    private void InstantiateEntry(int index)
+    private IEnumerator UpdateHighscoreProgress()
     {
-        ScoreEntry hs = highscores[index];
-        GameObject go = Instantiate(highscoreEntryPrefab, highscoresArea);
-        go.GetComponent<HighscoreEntry>().Initialize(hs, index + 1);
+        SceneHandler.instance.transition.StartTransitionOut();
+        while (SceneHandler.instance.haltTransitionIn > 0)
+        {
+            SceneHandler.instance.UpdateProgress(SceneHandler.instance.externalProgress);
+            yield return null;
+        }
+        SceneHandler.instance.UpdateProgressDone();
+        SceneHandler.instance.transition.StartTransitionIn();
     }
 
-    private void GetScores()
+    public void GetScores()
     {
-        numHighscores = PlayerPrefs.GetInt("numHighscores", 0);
         ScoreEntry[] scores = new ScoreEntry[numHighscores];
         for (int i = 0; i < numHighscores; i++)
         {
@@ -288,45 +342,49 @@ public class GameController : MonoBehaviour
     }
 }
 
-public struct ScoreEntry : IComparable<ScoreEntry>
+public struct ScoreEntry : System.IComparable<ScoreEntry>, System.IEquatable<ScoreEntry>
 {
     #region constants
 
     private const string PrefEntryName_Score = "_score";
     private const string PrefEntryName_Name = "_name";
+    private const string PrefEntryName_Difficulty = "_difficulty";
     private const string PrefEntryName_TimeTaken = "_timeTaken";
     private const string PrefEntryName_Kills = "_kills";
     private const string PrefEntryName_IRLTime_left = "_IRLTime_left";
     private const string PrefEntryName_IRLTime_right = "_IRLTime_right";
-    private static readonly ScoreEntry error = new ScoreEntry(0, "LD_ERR", 0f, 0, backup, false);
+    private static readonly ScoreEntry error = new ScoreEntry(0, "LD_ERR", Difficulty.Normal, 0f, 0, backup, false);
 
     #endregion constants
 
     public int score;
     public string name;
+    public Difficulty difficulty;
     public float timeTaken;
     public int kills;
-    public DateTime entryIRL_Time;
+    public System.DateTime entryIRL_Time;
     public bool isLast;
 
-    private static DateTime backup = new DateTime(1945, 4, 30, 15, 30, 0, 7, DateTimeKind.Local);
+    private static System.DateTime backup = new System.DateTime(1945, 4, 30, 15, 30, 0, 7, System.DateTimeKind.Local);
 
-    public static ScoreEntry New(int score, string name, float timeTaken, int kills)
+    public static ScoreEntry New(int score, string name, Difficulty difficulty, float timeTaken, int kills)
     {
         ScoreEntry se = new ScoreEntry();
         se.score = score;
         se.name = name;
+        se.difficulty = difficulty;
         se.timeTaken = timeTaken;
         se.kills = kills;
-        se.entryIRL_Time = DateTime.Now;
+        se.entryIRL_Time = System.DateTime.Now;
         se.isLast = true;
         return se;
     }
 
-    public ScoreEntry(int score, string name, float timeTaken, int kills, DateTime entryIRL_Time, bool isLast)
+    public ScoreEntry(int score, string name, Difficulty difficulty, float timeTaken, int kills, System.DateTime entryIRL_Time, bool isLast)
     {
         this.score = score;
         this.name = name;
+        this.difficulty = difficulty;
         this.timeTaken = timeTaken;
         this.kills = kills;
         this.entryIRL_Time = entryIRL_Time;
@@ -349,6 +407,11 @@ public struct ScoreEntry : IComparable<ScoreEntry>
 
         if (PlayerPrefs.HasKey(index + PrefEntryName_Name))
             check.name = PlayerPrefs.GetString(index + PrefEntryName_Name);
+        else
+            success = false;
+
+        if (PlayerPrefs.HasKey(index + PrefEntryName_Difficulty))
+            check.difficulty = (Difficulty)PlayerPrefs.GetInt(index + PrefEntryName_Difficulty);
         else
             success = false;
 
@@ -375,6 +438,7 @@ public struct ScoreEntry : IComparable<ScoreEntry>
     {
         PlayerPrefs.SetInt(index + PrefEntryName_Score, entry.score);
         PlayerPrefs.SetString(index + PrefEntryName_Name, entry.name);
+        PlayerPrefs.SetInt(index + PrefEntryName_Difficulty, (int)entry.difficulty);
         PlayerPrefs.SetFloat(index + PrefEntryName_TimeTaken, entry.timeTaken);
         PlayerPrefs.SetInt(index + PrefEntryName_Kills, entry.kills);
 
@@ -395,7 +459,7 @@ public struct ScoreEntry : IComparable<ScoreEntry>
         }
     }
 
-    public static void GetTimeInts(DateTime dateTime, out int left, out int right)
+    public static void GetTimeInts(System.DateTime dateTime, out int left, out int right)
     {
         dateTime.Ticks.Split(out left, out right);
     }
@@ -405,12 +469,12 @@ public struct ScoreEntry : IComparable<ScoreEntry>
         return PlayerPrefs.HasKey(index + PrefEntryName_IRLTime_left) && PlayerPrefs.HasKey(index + PrefEntryName_IRLTime_right);
     }
 
-    public static DateTime GetDateTime(int index)
+    public static System.DateTime GetDateTime(int index)
     {
         int left = PlayerPrefs.GetInt(index + PrefEntryName_IRLTime_left);
         int right = PlayerPrefs.GetInt(index + PrefEntryName_IRLTime_right);
         long dt = Tools.Tools.MakeLong(left, right);
-        DateTime dateTime = DateTime.FromBinary(dt);
+        System.DateTime dateTime = System.DateTime.FromBinary(dt);
         return dateTime;
     }
 
@@ -424,24 +488,31 @@ public struct ScoreEntry : IComparable<ScoreEntry>
                 switch (comp)
                 {
                     case 0:
-                        comp = kills.CompareTo(other.kills);
+                        comp = difficulty.CompareTo(other.difficulty);
                         switch (comp)
                         {
                             case 0:
-                                comp = -timeTaken.CompareTo(other.timeTaken);
+                                comp = kills.CompareTo(other.kills);
                                 switch (comp)
                                 {
-                                    case 0: // basically impossible
-                                        if (Tools.Tools.Coinflip())
-                                            return 1;
-                                        return -1;
+                                    case 0:
+                                        comp = -timeTaken.CompareTo(other.timeTaken);
+                                        switch (comp)
+                                        {
+                                            case 0: // basically impossible
+                                                if (Tools.Tools.Coinflip())
+                                                    return 1;
+                                                return -1;
+
+                                            default:
+                                                return -timeTaken.CompareTo(other.timeTaken); // more time -> higher up
+                                        }
 
                                     default:
-                                        return -timeTaken.CompareTo(other.timeTaken); // more time -> higher up
+                                        return -comp; // more kills -> higher up
                                 }
-
                             default:
-                                return -comp; // more kills -> higher up
+                                return comp; // higher difficulty -> higher up
                         }
                     default:
                         return comp; // earlyer name -> higher up
@@ -449,5 +520,10 @@ public struct ScoreEntry : IComparable<ScoreEntry>
             default:
                 return -comp; // higher score -> higher up
         }
+    }
+
+    public bool Equals(ScoreEntry other)
+    {
+        return score == other.score && name == other.name && difficulty == other.difficulty && timeTaken == other.timeTaken && kills == other.kills && entryIRL_Time == other.entryIRL_Time;
     }
 }

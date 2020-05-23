@@ -7,6 +7,9 @@ namespace Fighting
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon/Dummy")]
     public abstract class WeaponInfo : ScriptableObject
     {
+        public int baseAmmo = 20;
+        public int ammo = 0;
+
         public float baseWeaponCooldown;
         public float weaponDrawTime = .2f;
         public GameObject bullet;
@@ -40,6 +43,7 @@ namespace Fighting
 
         public virtual void Reset()
         {
+            ammo = baseAmmo;
             firepoint = null;
             currentCooldown = baseWeaponCooldown;
         }
@@ -71,7 +75,7 @@ namespace Fighting
             if (!isShooting && fireTime > currentCooldown)
                 fireTime = currentCooldown;
 
-            if (isShooting)
+            if (isShooting && CheckAmmo())
             {
                 // wants to shoot
                 if (drawTimeLeft <= 0f)
@@ -101,6 +105,13 @@ namespace Fighting
             }
         }
 
+        internal virtual bool CheckAmmo()
+        {
+            if (ammo > 0)
+                return true;
+            return false;
+        }
+
         internal virtual void ResetUpdate()
         {
             // weapon should not be drawn, holster it
@@ -114,8 +125,9 @@ namespace Fighting
 
         internal void HandleFire(float overshotTime)
         {
-            OnFire?.Invoke();
             Fire(overshotTime);
+            ammo--;
+            OnFire?.Invoke();
             CalculateCooldown();
         }
 

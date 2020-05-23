@@ -37,22 +37,41 @@ public class Inventory : MonoBehaviour
         input = new MyInputSystem();
         input.PlayerActionControlls.CycleWeaponRight.started += OnCycleWeaponRight;
         input.PlayerActionControlls.CycleWeaponLeft.started += OnCycleWeaponLeft;
+
+        weaponHandler.weapon.OnFire += Weapon_OnFire;
         UpdateWeaponName();
+    }
+
+    private void Weapon_OnFire()
+    {
+        if (weaponHandler.weapon.ammo <= 0)
+        {
+            arsenal.Remove(weaponHandler.weapon);
+        }
     }
 
     private void Update()
     {
+        UpdateWeaponName();
+    }
+
+    ~Inventory()
+    {
+        weaponHandler.weapon.OnFire -= Weapon_OnFire;
     }
 
     public void OnCycleWeaponRight(InputAction.CallbackContext ctx)
     {
         if (arsenal.Count <= 1) return;
 
+        weaponHandler.weapon.OnFire -= Weapon_OnFire;
+
         WeaponInfo weapon = arsenal[0];
         arsenal.Remove(weapon);
         arsenal.Add(weapon);
+        weapon.OnFire += Weapon_OnFire;
+
         weaponHandler.SetWeapon(arsenal[0]);
-        UpdateWeaponName();
     }
 
     private void UpdateWeaponName()
@@ -60,16 +79,20 @@ public class Inventory : MonoBehaviour
         if (weaponNameUI == null)
             return;
 
-        weaponNameUI.text = weaponHandler.weapon.name;
+        weaponNameUI.text = $"{weaponHandler.weapon.name} ({weaponHandler.weapon.ammo})";
     }
 
     public void OnCycleWeaponLeft(InputAction.CallbackContext ctx)
     {
         if (arsenal.Count <= 1) return;
 
+        weaponHandler.weapon.OnFire -= Weapon_OnFire;
+
         WeaponInfo weapon = arsenal[arsenal.Count - 1];
         arsenal.Remove(weapon);
         arsenal.Insert(0, weapon);
+        weapon.OnFire += Weapon_OnFire;
+
         weaponHandler.SetWeapon(weapon);
         UpdateWeaponName();
     }

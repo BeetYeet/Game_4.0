@@ -7,21 +7,31 @@ using UnityEngine.SceneManagement;
 public class MainMenuButtons : MonoBehaviour
 {
     [SerializeField]
-    private Button playButton;
+    private Button playButton = null;
 
     [SerializeField]
-    private Button scoresButton;
+    private Button scoresButton = null;
 
     [SerializeField]
-    private Button exitButton;
+    private Button settingsButton = null;
+
+    [SerializeField]
+    private Button exitButton = null;
 
     [SerializeField]
     private string playSceneName = "MainScene";
+
+    [SerializeField]
+    private string HighscoreSceneName = "Highscores Scene";
+
+    [SerializeField]
+    private RectTransform settings = null;
 
     private void Start()
     {
         playButton.onClick.AddListener(OnPlayPressed);
         scoresButton.onClick.AddListener(OnScoresPressed);
+        settingsButton.onClick.AddListener(OnSettingsPressed);
         exitButton.onClick.AddListener(OnExitPressed);
     }
 
@@ -32,7 +42,12 @@ public class MainMenuButtons : MonoBehaviour
 
     private void OnScoresPressed()
     {
-        // TODO: highscores scene
+        SceneHandler.instance.LoadScene(HighscoreSceneName);
+    }
+
+    private void OnSettingsPressed()
+    {
+        settings.gameObject.SetActive(!settings.gameObject.activeSelf);
     }
 
     private void OnExitPressed()

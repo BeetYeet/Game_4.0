@@ -8,7 +8,7 @@ public class EnemyAttackTrigger : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("Animation Attacked");
+        if(EnemyMovement.debug) Debug.Log("Animation Attacked");
         attackScript.TriggerAttack();
     }
 }

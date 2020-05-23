@@ -21,8 +21,21 @@ namespace Fighting
                 Debug.LogError($"Unassigned LightAnimation script!\nat {gameObject.name}");
                 enabled = false;
             }
-            weapon.OnFire += lightAnim.Trigger;
-            weapon.OnFire += particles.Play;
+            weapon.OnFire += OnFire;
+        }
+
+        private void OnFire()
+        {
+            if (particles != null)
+                particles.Play();
+            if (lightAnim != null)
+                lightAnim.Trigger();
+        }
+
+        ~WeaponHandler()
+        {
+            weapon.OnFire -= lightAnim.Trigger;
+            weapon.OnFire -= particles.Play;
         }
 
         private void LateUpdate()

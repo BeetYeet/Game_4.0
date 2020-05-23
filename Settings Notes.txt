@@ -1,0 +1,5 @@
+YOUDIED enabled --
+highscores deletable --
+difficulty
+show controller keyboard --
+preload highscores after game --

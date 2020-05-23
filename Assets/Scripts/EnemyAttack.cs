@@ -25,18 +25,35 @@ public class EnemyAttack : MonoBehaviour
 
     public void TriggerAttack()
     {
-        Debug.Log("Full Attack");
+        if (EnemyMovement.debug) Debug.Log("Full Attack");
         DealDamage(attackDamage);
     }
 
     private void DealDamage(float amount)
     {
-        player.Damage(amount);
+        switch (SettingsHandler.cache.dificulty)
+        {
+            case Difficulty.Easy:
+                player.Damage(amount * .5f);
+                break;
+
+            default:
+                player.Damage(amount);
+                break;
+
+            case Difficulty.Hard:
+                player.Damage(amount * 1.5f);
+                break;
+
+            case Difficulty.Extreme:
+                player.Damage(amount * 3f);
+                break;
+        }
     }
 
     private void Nibble()
     {
-        Debug.Log("Nibbled");
+        if (EnemyMovement.debug) Debug.Log("Nibbled");
         DealDamage(attackDamage / 2f);
     }
 }

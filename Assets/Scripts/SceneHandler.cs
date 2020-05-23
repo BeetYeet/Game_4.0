@@ -17,11 +17,16 @@ public class SceneHandler : MonoBehaviour
     private bool transitioningOut = false;
     private bool transitioningIn = false;
 
+    public int haltTransitionIn = 0;
+    public float externalProgress = 0f;
+
     [SerializeField]
     private Slider progressSlider;
 
     [SerializeField]
     private TextMeshProUGUI progressText;
+
+    private const bool debug = false;
 
     private void Awake()
     {
@@ -36,10 +41,15 @@ public class SceneHandler : MonoBehaviour
 
     public void LoadScene(string name)
     {
-        StartCoroutine(LoadSceneAsync(name));
+        StartCoroutine(LoadSceneAsync(name, false));
     }
 
-    private IEnumerator LoadSceneAsync(string name)
+    public void LoadScene(string name, bool hideLoad)
+    {
+        StartCoroutine(LoadSceneAsync(name, hideLoad));
+    }
+
+    private IEnumerator LoadSceneAsync(string name, bool hideLoad)
     {
         // start loading
         loadCallback = SceneManager.LoadSceneAsync(name);
@@ -49,31 +59,80 @@ public class SceneHandler : MonoBehaviour
         transition.OnTransitionOutEnd += TransitionOutDone;
         transitioningOut = true;
         transition.StartTransitionOut();
-        Show();
-        while (loadCallback.progress < .9f)
+        if (!hideLoad)
         {
-            // update progress
-            UpdateProgress(loadCallback.progress / .9f);
-            yield return null;
+            Show();
+            while (loadCallback.progress < .9f)
+            {
+                // update progress
+                UpdateProgress(loadCallback.progress / 9f);
+                if (debug)
+                    Debug.Log("Waiting for Load");
+                yield return null;
+            }
         }
-        // we done
-        progressSlider.value = 1f;
-        progressText.text = "Loading: Done!";
+        else
+        {
+            Hide();
+            while (loadCallback.progress < .9f)
+            {
+                // wait for completion
+                if (debug)
+                    Debug.Log("Waiting for Load");
+                yield return null;
+            }
+        }
+
+        if (debug)
+            Debug.Log("Loading Done!");
 
         while (transitioningOut)
         {
             // wait for the transition to finish
-            Debug.Log("Waiting for transition");
+            if (debug)
+                Debug.Log("Waiting for transition");
             yield return null;
         }
+
+        externalProgress = 0f;
+
         // go into new scene
         loadCallback.allowSceneActivation = true;
+        if (debug)
+            Debug.Log("Switching Scene");
         yield return null;
 
+        while (!loadCallback.isDone)
+        {
+            // wait for scene to fully load
+            yield return null;
+        }
+        yield return null;
+
+        while (haltTransitionIn > 0)
+        {
+            // update progress
+            UpdateProgress(.1f + externalProgress * .9f);
+            if (debug)
+                Debug.Log("Waiting for Load");
+            yield return null;
+        }
+
+        // we done
+        UpdateProgressDone();
+
+        if (debug)
+            Debug.Log("Transitioning in");
         // ok fade into new scene
         transition.OnTransitionInEnd += TransitionInDone;
         transitioningIn = true;
         transition.StartTransitionIn();
+    }
+
+    public void UpdateProgressDone()
+    {
+        progressSlider.value = 1f;
+        progressText.text = "Loading: Done!";
     }
 
     public void Hide()
@@ -101,7 +160,7 @@ public class SceneHandler : MonoBehaviour
         transitioningIn = false;
     }
 
-    private void UpdateProgress(float val)
+    public void UpdateProgress(float val)
     {
         progressSlider.value = val;
         progressText.text = $"Loading: {Mathf.CeilToInt(val * 100f)}%";

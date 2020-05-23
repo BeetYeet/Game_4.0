@@ -51,17 +51,41 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Heal"",
+                    ""name"": ""Restart"",
                     ""type"": ""Button"",
-                    ""id"": ""a7f691c4-dc06-4fe2-a9bf-e432d567d4f1"",
+                    ""id"": ""dab00d37-1036-40f6-a443-6ce68b6f0b39"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""TakeDamage"",
+                    ""name"": ""Menu"",
                     ""type"": ""Button"",
-                    ""id"": ""42f9ffca-bf08-4f02-8277-eb7abe935bfa"",
+                    ""id"": ""cc040df0-74e5-4131-9eec-7cbe4cee09b6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""DeleteHighscores"",
+                    ""type"": ""Button"",
+                    ""id"": ""3121df20-d7ff-4b37-a30e-78bb3fb7ade8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Keyboard Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d839716-29cc-41ef-ba57-65ddc061f7b7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Keyboard Discard"",
+                    ""type"": ""Button"",
+                    ""id"": ""54ad77d8-be92-4e65-857d-438679b477f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -246,23 +270,122 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""978735bd-7a0e-4acd-8efb-9af67b73c39f"",
-                    ""path"": ""<Keyboard>/numpadPlus"",
+                    ""id"": ""596c4c7f-1ac8-4212-b43a-a9d3957aed98"",
+                    ""path"": ""<XInputController>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Heal"",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6336bf36-4315-45ee-9171-cb01ab34d105"",
-                    ""path"": ""<Keyboard>/numpadMinus"",
+                    ""id"": ""04e3075f-ba13-40a7-b061-f1ae97195b10"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""TakeDamage"",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0704f3fa-2a00-4012-accc-2f125744355f"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f21c9ba-0144-41de-b517-17dc4d6ae667"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09f607e7-4a95-4522-9251-766f6ae0e6a8"",
+                    ""path"": ""<XInputController>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b60292a5-afbf-4b70-ab46-f5d3c947f953"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""DeleteHighscores"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7152787-e5ab-492c-9f2e-0e75e9611c2e"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DeleteHighscores"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fad0adf2-5704-4948-a544-a4bf2ec37da5"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteHighscores"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f256de6-03bc-493c-a2c0-a987395ffd2d"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Keyboard Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c35d8a8e-7816-46ee-ad1e-c917ea09150d"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Keyboard Discard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2397c6cf-4253-4f73-991e-b20f3bedd414"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Keyboard Discard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -305,8 +428,11 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
         m_PlayerActionControlls_ShootDirection = m_PlayerActionControlls.FindAction("Shoot Direction", throwIfNotFound: true);
         m_PlayerActionControlls_CycleWeaponRight = m_PlayerActionControlls.FindAction("Cycle Weapon Right", throwIfNotFound: true);
         m_PlayerActionControlls_CycleWeaponLeft = m_PlayerActionControlls.FindAction("Cycle Weapon Left", throwIfNotFound: true);
-        m_PlayerActionControlls_Heal = m_PlayerActionControlls.FindAction("Heal", throwIfNotFound: true);
-        m_PlayerActionControlls_TakeDamage = m_PlayerActionControlls.FindAction("TakeDamage", throwIfNotFound: true);
+        m_PlayerActionControlls_Restart = m_PlayerActionControlls.FindAction("Restart", throwIfNotFound: true);
+        m_PlayerActionControlls_Menu = m_PlayerActionControlls.FindAction("Menu", throwIfNotFound: true);
+        m_PlayerActionControlls_DeleteHighscores = m_PlayerActionControlls.FindAction("DeleteHighscores", throwIfNotFound: true);
+        m_PlayerActionControlls_KeyboardSubmit = m_PlayerActionControlls.FindAction("Keyboard Submit", throwIfNotFound: true);
+        m_PlayerActionControlls_KeyboardDiscard = m_PlayerActionControlls.FindAction("Keyboard Discard", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -360,8 +486,11 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActionControlls_ShootDirection;
     private readonly InputAction m_PlayerActionControlls_CycleWeaponRight;
     private readonly InputAction m_PlayerActionControlls_CycleWeaponLeft;
-    private readonly InputAction m_PlayerActionControlls_Heal;
-    private readonly InputAction m_PlayerActionControlls_TakeDamage;
+    private readonly InputAction m_PlayerActionControlls_Restart;
+    private readonly InputAction m_PlayerActionControlls_Menu;
+    private readonly InputAction m_PlayerActionControlls_DeleteHighscores;
+    private readonly InputAction m_PlayerActionControlls_KeyboardSubmit;
+    private readonly InputAction m_PlayerActionControlls_KeyboardDiscard;
     public struct PlayerActionControllsActions
     {
         private @MyInputSystem m_Wrapper;
@@ -370,8 +499,11 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
         public InputAction @ShootDirection => m_Wrapper.m_PlayerActionControlls_ShootDirection;
         public InputAction @CycleWeaponRight => m_Wrapper.m_PlayerActionControlls_CycleWeaponRight;
         public InputAction @CycleWeaponLeft => m_Wrapper.m_PlayerActionControlls_CycleWeaponLeft;
-        public InputAction @Heal => m_Wrapper.m_PlayerActionControlls_Heal;
-        public InputAction @TakeDamage => m_Wrapper.m_PlayerActionControlls_TakeDamage;
+        public InputAction @Restart => m_Wrapper.m_PlayerActionControlls_Restart;
+        public InputAction @Menu => m_Wrapper.m_PlayerActionControlls_Menu;
+        public InputAction @DeleteHighscores => m_Wrapper.m_PlayerActionControlls_DeleteHighscores;
+        public InputAction @KeyboardSubmit => m_Wrapper.m_PlayerActionControlls_KeyboardSubmit;
+        public InputAction @KeyboardDiscard => m_Wrapper.m_PlayerActionControlls_KeyboardDiscard;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionControlls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -393,12 +525,21 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                 @CycleWeaponLeft.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
                 @CycleWeaponLeft.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
                 @CycleWeaponLeft.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnCycleWeaponLeft;
-                @Heal.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnHeal;
-                @Heal.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnHeal;
-                @Heal.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnHeal;
-                @TakeDamage.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnTakeDamage;
-                @TakeDamage.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnTakeDamage;
-                @TakeDamage.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnTakeDamage;
+                @Restart.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnRestart;
+                @Restart.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnRestart;
+                @Restart.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnRestart;
+                @Menu.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnMenu;
+                @DeleteHighscores.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnDeleteHighscores;
+                @DeleteHighscores.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnDeleteHighscores;
+                @DeleteHighscores.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnDeleteHighscores;
+                @KeyboardSubmit.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardSubmit;
+                @KeyboardSubmit.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardSubmit;
+                @KeyboardSubmit.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardSubmit;
+                @KeyboardDiscard.started -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardDiscard;
+                @KeyboardDiscard.performed -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardDiscard;
+                @KeyboardDiscard.canceled -= m_Wrapper.m_PlayerActionControllsActionsCallbackInterface.OnKeyboardDiscard;
             }
             m_Wrapper.m_PlayerActionControllsActionsCallbackInterface = instance;
             if (instance != null)
@@ -415,12 +556,21 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
                 @CycleWeaponLeft.started += instance.OnCycleWeaponLeft;
                 @CycleWeaponLeft.performed += instance.OnCycleWeaponLeft;
                 @CycleWeaponLeft.canceled += instance.OnCycleWeaponLeft;
-                @Heal.started += instance.OnHeal;
-                @Heal.performed += instance.OnHeal;
-                @Heal.canceled += instance.OnHeal;
-                @TakeDamage.started += instance.OnTakeDamage;
-                @TakeDamage.performed += instance.OnTakeDamage;
-                @TakeDamage.canceled += instance.OnTakeDamage;
+                @Restart.started += instance.OnRestart;
+                @Restart.performed += instance.OnRestart;
+                @Restart.canceled += instance.OnRestart;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
+                @DeleteHighscores.started += instance.OnDeleteHighscores;
+                @DeleteHighscores.performed += instance.OnDeleteHighscores;
+                @DeleteHighscores.canceled += instance.OnDeleteHighscores;
+                @KeyboardSubmit.started += instance.OnKeyboardSubmit;
+                @KeyboardSubmit.performed += instance.OnKeyboardSubmit;
+                @KeyboardSubmit.canceled += instance.OnKeyboardSubmit;
+                @KeyboardDiscard.started += instance.OnKeyboardDiscard;
+                @KeyboardDiscard.performed += instance.OnKeyboardDiscard;
+                @KeyboardDiscard.canceled += instance.OnKeyboardDiscard;
             }
         }
     }
@@ -449,7 +599,10 @@ public class @MyInputSystem : IInputActionCollection, IDisposable
         void OnShootDirection(InputAction.CallbackContext context);
         void OnCycleWeaponRight(InputAction.CallbackContext context);
         void OnCycleWeaponLeft(InputAction.CallbackContext context);
-        void OnHeal(InputAction.CallbackContext context);
-        void OnTakeDamage(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
+        void OnDeleteHighscores(InputAction.CallbackContext context);
+        void OnKeyboardSubmit(InputAction.CallbackContext context);
+        void OnKeyboardDiscard(InputAction.CallbackContext context);
     }
 }
