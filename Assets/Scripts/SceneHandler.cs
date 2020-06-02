@@ -41,11 +41,16 @@ public class SceneHandler : MonoBehaviour
 
     public void LoadScene(string name)
     {
-        StartCoroutine(LoadSceneAsync(name, false));
+        LoadScene(name, false);
     }
+
+    private bool isLoading = false;
 
     public void LoadScene(string name, bool hideLoad)
     {
+        if (isLoading)
+            return;
+        isLoading = true;
         StartCoroutine(LoadSceneAsync(name, hideLoad));
     }
 
@@ -127,6 +132,7 @@ public class SceneHandler : MonoBehaviour
         transition.OnTransitionInEnd += TransitionInDone;
         transitioningIn = true;
         transition.StartTransitionIn();
+        isLoading = false;
     }
 
     public void UpdateProgressDone()

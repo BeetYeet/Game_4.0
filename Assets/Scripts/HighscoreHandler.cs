@@ -49,12 +49,13 @@ public class HighscoreHandler : MonoBehaviour
     [SerializeField]
     private float scrollSpeed = 10f;
 
+    public HighscoreEntry newest;
+
     private void Awake()
     {
         instance = this;
 
         input = new MyInputSystem();
-        deleteHighscoresButton.onClick.AddListener(CheckReset);
         if (isHighscoreScene)
         {
             restartButton.gameObject.SetActive(false);
@@ -62,9 +63,11 @@ public class HighscoreHandler : MonoBehaviour
         else
         {
             restartButton.onClick.AddListener(RestartLevel);
+            restartButton.onClick.AddListener(AudioHandler.Click);
             input.PlayerActionControlls.Restart.performed += delegate { Press(restartButton); };
         }
         menuButton.onClick.AddListener(LoadMenu);
+        menuButton.onClick.AddListener(AudioHandler.Click);
 
         input.PlayerActionControlls.Move.performed += Move_performed;
         input.PlayerActionControlls.Menu.performed += delegate { Press(menuButton); };
@@ -72,6 +75,7 @@ public class HighscoreHandler : MonoBehaviour
         if (SettingsHandler.cache.highscoreDeletable)
         {
             deleteHighscoresButton.onClick.AddListener(CheckReset);
+            deleteHighscoresButton.onClick.AddListener(AudioHandler.Click);
             input.PlayerActionControlls.DeleteHighscores.performed += delegate { Press(deleteHighscoresButton); };
         }
         else
@@ -108,8 +112,11 @@ public class HighscoreHandler : MonoBehaviour
         SceneHandler.instance.LoadScene(menuName);
     }
 
+    private bool isRestarting = false;
+
     private void RestartLevel()
     {
+        isRestarting = true;
         SceneHandler.instance.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -127,14 +134,14 @@ public class HighscoreHandler : MonoBehaviour
         }
         GameController.instance.highscores.Sort();
         Enable();
-        Display();
+        Display(-1);
     }
 
     private void Update()
     {
         if (move.y != 0f)
         {
-            highscoresScrollController.verticalNormalizedPosition += move.y * Time.unscaledDeltaTime * scrollSpeed / highscoresArea.GetComponent<RectTransform>().rect.height;
+            highscoresScrollController.verticalNormalizedPosition = Mathf.Clamp01(highscoresScrollController.verticalNormalizedPosition + move.y * Time.unscaledDeltaTime * scrollSpeed / highscoresArea.GetComponent<RectTransform>().rect.height);
         }
     }
 
@@ -143,30 +150,29 @@ public class HighscoreHandler : MonoBehaviour
         transform.GetChild(0).gameObject.SetActive(true);
     }
 
-    public void Display()
+    public void Display(int newIndex)
     {
-        StartCoroutine(DisplayAsync());
+        StartCoroutine(DisplayAsync(newIndex));
     }
 
-    private IEnumerator DisplayAsync()
+    private IEnumerator DisplayAsync(int newIndex)
     {
         System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
         for (int i = 0; i < GameController.instance.highscores.Count; i++)
         {
-            InstantiateEntry(GameController.instance.highscores[i], i);
+            GameObject go = InstantiateEntry(GameController.instance.highscores[i], i);
             SceneHandler.instance.externalProgress = i / (float)GameController.instance.highscores.Count;
+            if (newIndex == i)
+            {
+                newest = go.GetComponent<HighscoreEntry>();
+                Debug.Log($"Newest is {go.name}");
+            }
             yield return null;
         }
         stopwatch.Stop();
         Debug.Log($"Instantiate Score Entries took {stopwatch.ElapsedMilliseconds}ms");
 
         SetScrollSize();
-        int index = GameController.instance.highscores.FindIndex(new System.Predicate<ScoreEntry>((x) => { if (x.isLast) { return true; } return false; }));
-        if (index != -1)
-        {
-            RectTransform last = (RectTransform)highscoresArea.GetChild(index);
-            SnapTo(last);
-        }
         SceneHandler.instance.haltTransitionIn--;
     }
 
@@ -178,13 +184,13 @@ public class HighscoreHandler : MonoBehaviour
             {
                 isSureAboutClear = true;
                 deleteHighscoresText.text = "Are you sure?";
+                StartCoroutine(ResetSure());
             }
             else
             {
                 isSureAboutClear = false;
                 deleteHighscoresText.text = "Click to cancel";
                 ResetHighscores();
-                deleteHighscoresButton.onClick.RemoveListener(delegate { CheckReset(); });
             }
         }
         else
@@ -192,6 +198,16 @@ public class HighscoreHandler : MonoBehaviour
             isClearing = false;
             isSureAboutClear = false;
             deleteHighscoresText.text = "Canceled";
+        }
+    }
+
+    private IEnumerator ResetSure()
+    {
+        yield return new WaitForSecondsRealtime(3.5f);
+        if (isSureAboutClear)
+        {
+            isSureAboutClear = false;
+            deleteHighscoresText.text = "Clear Highscores";
         }
     }
 
@@ -230,20 +246,21 @@ public class HighscoreHandler : MonoBehaviour
             {
                 Destroy(highscoresArea.GetChild(i).gameObject);
             }
-            Display();
+            Display(-1);
             yield return new WaitForSecondsRealtime(3.5f);
             deleteHighscoresText.text = "Clear Highscores";
         }
     }
 
-    public void AddNew(ScoreEntry newScore)
+    /*public void AddNew(ScoreEntry newScore)
     {
         int index = GameController.instance.highscores.FindIndex(new Predicate<ScoreEntry>((x) => { return x.Equals(newScore); }));
         GameObject go = InstantiateEntry(newScore, index);
         go.transform.SetSiblingIndex(index);
 
         SetScrollSize();
-    }
+        SnapTo(go.GetComponent<RectTransform>());
+    }*/
 
     private static void DeleteHighscores()
     {
@@ -256,16 +273,19 @@ public class HighscoreHandler : MonoBehaviour
     {
         Canvas.ForceUpdateCanvases();
 
-        ((RectTransform)highscoresArea).anchoredPosition =
-            (Vector2)highscoresScrollController.transform.InverseTransformPoint(((RectTransform)highscoresArea).position)
+        RectTransform rectTransform = highscoresArea.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition =
+            (Vector2)highscoresScrollController.transform.InverseTransformPoint(rectTransform.position)
             - (Vector2)highscoresScrollController.transform.InverseTransformPoint(target.position)
-            + Vector2.up * ((RectTransform)highscoreEntryPrefab.transform).sizeDelta.y / 2f
-            - Vector2.up * highscoresScrollViewport.rect.height;
+            - Vector2.up * (highscoresScrollViewport.rect.height -
+            target.rect.height / 2f);
+
+        Debug.Log($"Snapped to GameObject: {target.name}");
     }
 
     private void SetScrollSize()
     {
-        highscoresArea.GetComponent<RectTransform>().sizeDelta = new Vector2(highscoresArea.GetComponent<RectTransform>().sizeDelta.x, highscoreEntryPrefab.GetComponent<RectTransform>().rect.height * highscoresArea.childCount);
+        //highscoresArea.GetComponent<RectTransform>().sizeDelta = new Vector2(highscoresArea.GetComponent<RectTransform>().sizeDelta.x, highscoreEntryPrefab.GetComponent<RectTransform>().rect.height * highscoresArea.childCount);
     }
 
     private GameObject InstantiateEntry(ScoreEntry entry, int index)

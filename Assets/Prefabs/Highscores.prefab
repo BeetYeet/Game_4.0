@@ -404,6 +404,7 @@ MonoBehaviour:
   lastTint: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 0}
   isMenuEntry: 0
+  isAfterGame: 0
 --- !u!114 &4674301371018578453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +459,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 59, y: -30}
+  m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 75.2, y: 75.2}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &3797133765331144837
@@ -487,7 +488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2989740268168446692, guid: c24ef620133fa2844b7dbc370e6d78ba,
+  m_Sprite: {fileID: -223304485193896496, guid: f559407d838b77a46b19dfe98262b246,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1353,6 +1354,7 @@ GameObject:
   - component: {fileID: 6431653007606439544}
   - component: {fileID: 6431653007606439543}
   - component: {fileID: 6431653007606439542}
+  - component: {fileID: 1747624102}
   m_Layer: 5
   m_Name: Highscores
   m_TagString: Untagged
@@ -1462,8 +1464,70 @@ MonoBehaviour:
   highscoreEntryPrefab: {fileID: 181858328408228902, guid: 121c9b431a06e6e49848e4df8958e82a,
     type: 3}
   menuName: Main Menu
-  isHighscoreScene: 0
-  scrollSpeed: 30000
+  isHighscoreScene: 1
+  scrollSpeed: 10000
+  newest: {fileID: 0}
+--- !u!114 &1747624102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431653007606439541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e745fea9848e214ca0f10bdce6395c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameInput: {fileID: 0}
+  nameConfirmButton: {fileID: 0}
+  nameDiscardButton: {fileID: 0}
+  playingUI: {fileID: 0}
+  deathUI: {fileID: 0}
+  nameSubmitUI: {fileID: 0}
+  nameSubmitCanvasGroup: {fileID: 0}
+  deathVideo: {fileID: 0}
+  keyFirstSelected: {fileID: 0}
+  controllerKeyboard: {fileID: 0}
+  pauseUI: {fileID: 0}
+  zombieLiveContext:
+    volume: 0
+    minPitch: 0
+    maxPitch: 0
+    spatialBlend: 0
+    priority: 0
+  zombieLiveSounds: []
+  zombieDieContext:
+    volume: 0
+    minPitch: 0
+    maxPitch: 0
+    spatialBlend: 0
+    priority: 0
+  zombieDieSounds: []
+  zombieNibbleContext:
+    volume: 0
+    minPitch: 0
+    maxPitch: 0
+    spatialBlend: 0
+    priority: 0
+  zombieNibbleSounds: []
+  zombieAttackContext:
+    volume: 0
+    minPitch: 0
+    maxPitch: 0
+    spatialBlend: 0
+    priority: 0
+  zombieAttackSounds: []
+  score: 0
+  playing: 0
+  kills: 0
+  debugMode: 0
+  isHighscoreScene: 1
+  ammoBox: {fileID: 0}
+  ammoRate: 0.5
+  healthBox: {fileID: 0}
+  healthRate: 0.5
+  afterGameEntry: {fileID: 0}
 --- !u!1 &6431653007824952755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,8 +1563,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1519, y: -65.00001}
-  m_SizeDelta: {x: 522.1, y: 130}
+  m_AnchoredPosition: {x: 1461.6, y: -65.00001}
+  m_SizeDelta: {x: 636.8, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6431653007824952757
 MonoBehaviour:
@@ -1713,7 +1777,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Clear Highscores
+  m_text: "Clear \nHighscores"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2291,6 +2355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6431653008642771247}
   - component: {fileID: 6431653008642771152}
+  - component: {fileID: 1403588956}
   m_Layer: 5
   m_Name: Scroll Area
   m_TagString: Untagged
@@ -2312,11 +2377,11 @@ RectTransform:
   m_Father: {fileID: 6431653008895285057}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 1}
+  m_SizeDelta: {x: 1763, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &6431653008642771152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2342,6 +2407,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1403588956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431653008642771246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &6431653008768766710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,8 +2583,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 423.47498, y: -65}
-  m_SizeDelta: {x: 177.24998, y: 120}
+  m_AnchoredPosition: {x: 495.385, y: -65}
+  m_SizeDelta: {x: 262.83, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6431653009006693433
 CanvasRenderer:
@@ -2601,7 +2680,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 0
+  m_PreferredWidth: 56.46
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -2643,8 +2722,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -719.6, y: 0}
-  m_SizeDelta: {x: -1459, y: -10}
+  m_AnchoredPosition: {x: -662.2996, y: 0}
+  m_SizeDelta: {x: -1344.4, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6431653009117067829
 CanvasRenderer:
@@ -2922,8 +3001,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 164.92499, y: -65}
-  m_SizeDelta: {x: 309.84998, y: 120}
+  m_AnchoredPosition: {x: 179.485, y: -65}
+  m_SizeDelta: {x: 338.97, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6431653009555287839
 CanvasRenderer:
@@ -3263,7 +3342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.000061035156, y: -30}
+  m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 75.2, y: 75.2}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &2033424185329811046
@@ -3292,7 +3371,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7605347675087610366, guid: c24ef620133fa2844b7dbc370e6d78ba,
+  m_Sprite: {fileID: -7234908010682543847, guid: f559407d838b77a46b19dfe98262b246,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -3337,7 +3416,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.000061035156, y: -30}
+  m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 75.2, y: 75.2}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4967221555061213196
@@ -3366,7 +3445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7755831546083099361, guid: c24ef620133fa2844b7dbc370e6d78ba,
+  m_Sprite: {fileID: -1974954986932873504, guid: f559407d838b77a46b19dfe98262b246,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0

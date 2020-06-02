@@ -11,17 +11,17 @@ public class ZombieSpawner : MonoBehaviour
     [Range(0f, 1f)]
     public float spawnRateVariance = 0f;
 
-    private float timeSinceLast = 0f;
+    public float timeSinceLast = 0f;
 
-    public GameObject zombie;
-    private Transform enemyHolder;
+    public GameObject prefab;
 
-    private void Start()
+    public bool IsDone()
     {
-        enemyHolder = GameObject.FindGameObjectWithTag("EnemyHolder").transform;
+        if (spawnCount > 0)
+            return false;
+        return true;
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (spawnCount > 0)
@@ -60,7 +60,7 @@ public class ZombieSpawner : MonoBehaviour
         timeSinceLast = 0f;
         spawnCount--;
         spawnedCount++;
-        Instantiate(zombie, transform.position + new Vector3(transform.localScale.x * Random.value, 0f, transform.localScale.z * Random.value), Quaternion.Euler(0f, Random.value * 360f, 0f), enemyHolder);
+        Instantiate(prefab, transform.position + new Vector3(Random.Range(-transform.localScale.x, transform.localScale.x) / 2f, 0f, Random.Range(-transform.localScale.z, transform.localScale.z)), Quaternion.Euler(0f, Random.value * 360f, 0f), ZombieSpawnerController.enemyHolder);
     }
 
     private void OnDrawGizmosSelected()

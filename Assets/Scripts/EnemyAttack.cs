@@ -27,6 +27,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (EnemyMovement.debug) Debug.Log("Full Attack");
         DealDamage(attackDamage);
+        GameController.instance.AttackSound(transform.position);
     }
 
     private void DealDamage(float amount)
@@ -55,5 +56,6 @@ public class EnemyAttack : MonoBehaviour
     {
         if (EnemyMovement.debug) Debug.Log("Nibbled");
         DealDamage(attackDamage / 2f);
+        GameController.instance.NibbleSound(transform.position);
     }
 }

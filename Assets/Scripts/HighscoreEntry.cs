@@ -38,6 +38,9 @@ public class HighscoreEntry : MonoBehaviour
     [SerializeField]
     private bool isMenuEntry = false;
 
+    [SerializeField]
+    private bool isAfterGame = false;
+
     private void Start()
     {
         if (isMenuEntry && ScoreEntry.Exists(0))
@@ -56,10 +59,14 @@ public class HighscoreEntry : MonoBehaviour
 
     public void Initialize(ScoreEntry entry, int index)
     {
-        if (!isMenuEntry)
+        if (!isMenuEntry && !isAfterGame)
+            name = $"Highscore #{index.ToString("D4")} - {entry.name}";
+
+        if (!isMenuEntry && !isAfterGame)
             positionText.text = "#" + index.ToString("D4");
         scoreText.text = entry.score.ToString("D7");
-        nameText.text = entry.name;
+        if (!isAfterGame)
+            nameText.text = entry.name;
 
         if (entry.difficulty == Difficulty.Hard && (entry.name == "PP" || entry.name == "PEEPEE" || entry.name == "PEPE"))
             difficultyText.text = "SOFT";
@@ -73,7 +80,7 @@ public class HighscoreEntry : MonoBehaviour
         int hours = Mathf.FloorToInt(entry.timeTaken / 3600f);
         int minutes = Mathf.FloorToInt((entry.timeTaken % 3600f) / 60f);
         int seconds = Mathf.FloorToInt((entry.timeTaken % 60f));
-        if (isMenuEntry)
+        if (isMenuEntry || isAfterGame)
         {
             if (hours != 0)
                 timeTakenText.text = $"{hours}h {minutes}m {seconds}s";
@@ -86,9 +93,10 @@ public class HighscoreEntry : MonoBehaviour
         {
             timeTakenText.text = $"{hours}h {minutes}m {seconds}s";
         }
-        timeAcomplishedText.text = GetDateString(entry);
+        if (!isAfterGame)
+            timeAcomplishedText.text = GetDateString(entry);
 
-        if (entry.isLast)
+        if (entry.isLast && !isAfterGame)
             background.color *= lastTint;
     }
 
@@ -157,6 +165,12 @@ public class HighscoreEntry : MonoBehaviour
         seconds: timeSpan.Seconds
         );
         return timeInfo;
+    }
+
+    public void SetNewName(string playerName)
+    {
+        nameText.text = playerName;
+        name += playerName;
     }
 }
 

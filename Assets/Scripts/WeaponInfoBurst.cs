@@ -10,7 +10,7 @@ namespace Fighting
         public float bulletVelocity;
         public float firerateVariance = 0.1f;
 
-        public int burstLength = 3;
+        public int burstLength = 4;
         private int burstNum;
         public float burstDelay = 1f;
 
@@ -26,6 +26,58 @@ namespace Fighting
                 currentCooldown = baseWeaponCooldown * (1 + Random.Range(-firerateVariance, firerateVariance)); ;
                 burstNum++;
             }
+        }
+
+        // de-holster / re-holster
+        public override void SoftReset()
+        {
+            base.SoftReset();
+            burstNum = -1;
+        }
+
+        public override void Update()
+        {
+
+            if (CheckAmmo() && (isShooting || burstNum != 0))
+            {
+                // wants to shoot
+                if (drawTimeLeft <= 0f)
+                {
+                    // weapon is drawn
+                    if (currentCooldown <= 0.0001f)
+                    {
+                        Debug.LogError("Way too low cooldown, big no-no!");
+                        return;
+                    }
+                    while (fireTime > currentCooldown)
+                    {
+                        // weapon ready
+                        fireTime -= currentCooldown;
+                        if (highSpeed)
+                            HandleFire(0f);
+                        else
+                            HandleFire(fireTime);
+                    }
+                }
+                else
+                {
+                    // player is trying to draw the weapon
+                    drawTimeLeft -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                Holster();
+            }
+            fireTime += Time.deltaTime;
+            if (burstNum == 0)
+                if ((!isShooting || drawTimeLeft > 0) && fireTime > currentCooldown)
+                    fireTime = currentCooldown;
+        }
+
+        internal override Quaternion GetInaccurateRotation()
+        {
+            return firepoint.rotation * Quaternion.Euler(Mathf.Clamp(Random.Range(-inaccuracyAngle, inaccuracyAngle) / 3f, -10f, 10f), Random.Range(-inaccuracyAngle, inaccuracyAngle) * (1 + 3 * burstNum / (float)burstLength), 0f);
         }
 
         internal override void Fire(float overshotTime)

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tools;
 
 namespace Fighting
 {
-    [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon/Dummy")]
     public abstract class WeaponInfo : ScriptableObject
     {
         public int baseAmmo = 20;
@@ -20,8 +20,21 @@ namespace Fighting
         public float damage = 5f;
         public float armorPenetration = 1f;
         public bool kinetic = false;
+        public bool highSpeed = false;
+
+        public List<string> shootSounds = new List<string>();
+        public AudioHandler.AudioContext audioContext = AudioHandler.AudioContext.empty;
+
+        public string casingDenominator = "Casing ";
+        public AudioHandler.AudioContext casingAudioContext = AudioHandler.AudioContext.empty;
+
+        [Range(0f, 2f)]
+        public float casingDelayFactor = 1f;
 
         // Internal things
+        [HideInInspector]
+        public bool usable = true;
+
         [HideInInspector]
         public bool isShooting;
 
@@ -41,11 +54,30 @@ namespace Fighting
             currentCooldown = cooldown;
         }
 
-        public virtual void Reset()
+        // New Run
+        public virtual void HardReset()
         {
             ammo = baseAmmo;
             firepoint = null;
+            SoftReset();
+        }
+
+        // de-holster / re-holster
+        public virtual void SoftReset()
+        {
+            usable = true;
             currentCooldown = baseWeaponCooldown;
+            fireTime = currentCooldown;
+            isShooting = false;
+        }
+
+        public virtual void CasingSound()
+        {
+            if (firepoint == null)
+                return;
+            AudioHandler.AudioContext adjustedContext = casingAudioContext;
+            adjustedContext.volume *= SettingsHandler.cache.volume_gun * SettingsHandler.cache.volume_master;
+            AudioHandler.PlaySound(casingDenominator + Random.Range(1, 21).ToString("D2"), adjustedContext, firepoint.position.Mult(new Vector3(1f, 0f, 1f)));
         }
 
         internal virtual Quaternion GetInaccurateRotation()
@@ -64,17 +96,13 @@ namespace Fighting
         /// <param name="firepoint">The point in world space to spawn the bullets at</param>
         public virtual void Initialize(Transform firepoint)
         {
-            Reset();
+            SoftReset();
             this.firepoint = firepoint;
             CalculateCooldown();
         }
 
         public virtual void Update()
         {
-            fireTime += Time.deltaTime;
-            if (!isShooting && fireTime > currentCooldown)
-                fireTime = currentCooldown;
-
             if (isShooting && CheckAmmo())
             {
                 // wants to shoot
@@ -90,7 +118,10 @@ namespace Fighting
                     {
                         // weapon ready
                         fireTime -= currentCooldown;
-                        HandleFire(fireTime);
+                        if (highSpeed)
+                            HandleFire(0f);
+                        else
+                            HandleFire(fireTime);
                     }
                 }
                 else
@@ -101,18 +132,26 @@ namespace Fighting
             }
             else
             {
-                ResetUpdate();
+                Holster();
             }
+
+            fireTime += Time.deltaTime;
+            if ((!isShooting || drawTimeLeft > 0) && fireTime > currentCooldown)
+                fireTime = currentCooldown;
         }
 
         internal virtual bool CheckAmmo()
         {
             if (ammo > 0)
+            {
+                usable = true;
                 return true;
+            }
+            usable = false;
             return false;
         }
 
-        internal virtual void ResetUpdate()
+        internal virtual void Holster()
         {
             // weapon should not be drawn, holster it
             drawTimeLeft = weaponDrawTime;
@@ -127,6 +166,12 @@ namespace Fighting
         {
             Fire(overshotTime);
             ammo--;
+            if (shootSounds.Count > 0)
+            {
+                AudioHandler.AudioContext adjustedContext = audioContext;
+                adjustedContext.volume *= SettingsHandler.cache.volume_gun * SettingsHandler.cache.volume_master;
+                AudioHandler.PlaySound(shootSounds[Random.Range(0, shootSounds.Count - 1)], adjustedContext, firepoint.position);
+            }
             OnFire?.Invoke();
             CalculateCooldown();
         }

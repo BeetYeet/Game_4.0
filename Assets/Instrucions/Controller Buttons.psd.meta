@@ -1,0 +1,514 @@
+fileFormatVersion: 2
+guid: f559407d838b77a46b19dfe98262b246
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8509803693727059760
+    second: Icon_StickLeft
+  - first:
+      213: -8434486545759832345
+    second: Icon_StickRight
+  - first:
+      213: 3441730060449328972
+    second: Icon_TriggerLeft
+  - first:
+      213: -5271389559933694643
+    second: Icon_TriggerRight
+  - first:
+      213: 1589633886649589384
+    second: Icon_BackButtonLeft
+  - first:
+      213: 1720645551057318012
+    second: Icon_DPad
+  - first:
+      213: -1974954986932873504
+    second: Icon_ButtonA
+  - first:
+      213: -7234908010682543847
+    second: Icon_ButtonB
+  - first:
+      213: -749821756618986501
+    second: Icon_ButtonX
+  - first:
+      213: -223304485193896496
+    second: Icon_ButtonY
+  - first:
+      213: -3911039541481345975
+    second: Icon_MenuButton
+  - first:
+      213: 6990346835516130897
+    second: Icon_MenuButton2
+  - first:
+      213: -4469802729113456441
+    second: Icon_BackButtonRight
+  - first:
+      213: -6672365133698940875
+    second: Controller Buttons_0
+  - first:
+      213: -6289427365597086255
+    second: Controller Buttons_1
+  - first:
+      213: 3380010078038686777
+    second: Icon_TriggerLeft
+  - first:
+      213: 6206066830944229473
+    second: Icon_TriggerRight
+  - first:
+      213: -3000602810449502395
+    second: Controller Buttons_4
+  - first:
+      213: -5841747337323475493
+    second: Icon_StickLeft
+  - first:
+      213: 9036729266420091313
+    second: Controller Buttons_6
+  - first:
+      213: 5081327085330632425
+    second: Controller Buttons_7
+  - first:
+      213: -4795853451827140080
+    second: Icon_StickRight
+  - first:
+      213: 1432424000966989692
+    second: Controller Buttons_9
+  - first:
+      213: 7009055781850076769
+    second: Icon_BackButtonLeft
+  - first:
+      213: 6397945530613707336
+    second: Icon_BackButtonRight
+  - first:
+      213: 7181355661407616847
+    second: Controller Buttons_12
+  - first:
+      213: 5250464640956153067
+    second: Controller Buttons_13
+  - first:
+      213: 311683112432371315
+    second: Icon_DirectionalPad
+  - first:
+      213: 9085187564519238791
+    second: Icon_ButtonA
+  - first:
+      213: -572310079126174539
+    second: Icon_ButtonB
+  - first:
+      213: 3446589936062583208
+    second: Icon_ButtonX
+  - first:
+      213: -1633401095558441706
+    second: Icon_ButtonY
+  - first:
+      213: -7916908595199645418
+    second: Icon_ButtonMenu
+  - first:
+      213: 3020750435064475152
+    second: Icon_ButtonView
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: 2
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Icon_TriggerLeft
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 354
+        width: 62
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93c7cb6024538ee20800000000000000
+      internalID: 3380010078038686777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_TriggerRight
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 354
+        width: 62
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 168d3cec6e0602650800000000000000
+      internalID: 6206066830944229473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_StickLeft
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 353
+        width: 78
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdd00436fb1fdeea0800000000000000
+      internalID: -5841747337323475493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_StickRight
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 353
+        width: 78
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01a2301f1b4b17db0800000000000000
+      internalID: -4795853451827140080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_BackButtonLeft
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 364
+        width: 89
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1665218191b254160800000000000000
+      internalID: 7009055781850076769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_BackButtonRight
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 364
+        width: 88
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8423784ff811ac850800000000000000
+      internalID: 6397945530613707336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_DirectionalPad
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 168
+        width: 77
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 376050fa322535400800000000000000
+      internalID: 311683112432371315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonA
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 168
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c27fc54f1151e70800000000000000
+      internalID: 9085187564519238791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonB
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 168
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b40f48e30fbe08f0800000000000000
+      internalID: -572310079126174539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonX
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 168
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a15279394fb4df20800000000000000
+      internalID: 3446589936062583208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonY
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 168
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61551839b5ef459e0800000000000000
+      internalID: -1633401095558441706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonMenu
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 168
+        width: 78
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61963e7049d712290800000000000000
+      internalID: -7916908595199645418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_ButtonView
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 168
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01eef1d148cdbe920800000000000000
+      internalID: 3020750435064475152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

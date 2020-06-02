@@ -64,6 +64,10 @@ public class PlayerController : Controll.CharacterController
             isAttacking = false;
             laser.isShooting = false;
             weapon.isShooting = false;
+            rigidBody.velocity = Vector3.zero;
+            transform.localRotation *= Quaternion.Euler(90, 0, 0);
+            enabled = false;
+            moveState = SpeedState.Idle;
             return;
         }
         isAttacking = aim.x != 0f || aim.y != 0f;

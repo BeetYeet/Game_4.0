@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public static PlayerHealth current;
+
     [SerializeField]
     private float health = 50f;
 
@@ -32,6 +34,11 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField]
     private HealthbarHandler healthBar;
+
+    private void Awake()
+    {
+        current = this;
+    }
 
     private void Start()
     {

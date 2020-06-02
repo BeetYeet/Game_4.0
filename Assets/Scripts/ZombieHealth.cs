@@ -42,14 +42,6 @@ public class ZombieHealth : MonoBehaviour
     [SerializeField]
     private ZombieType type = ZombieType.Basic;
 
-    private enum ZombieType
-    {
-        Basic,
-        Regen,
-        Tough,
-        Fast
-    }
-
     public bool Dead
     {
         get { return dead; }
@@ -58,6 +50,8 @@ public class ZombieHealth : MonoBehaviour
     public GameObject DeathReplacement;
     private EnemyMovement movement;
 
+    private float diedWithForce = 0f;
+
     private void Start()
     {
         UpdateHealthbar();
@@ -65,8 +59,8 @@ public class ZombieHealth : MonoBehaviour
         OnDeath += () =>
         {
             Destroy(gameObject);
-            Instantiate(DeathReplacement, transform.position, transform.rotation);
-            GameController.instance.OnEnemyDie();
+            Instantiate(DeathReplacement, transform.position, transform.rotation).GetComponent<DeadZombieController>().Initialize(diedWithForce);
+            GameController.instance.OnEnemyDie(transform.position);
         };
         movement = GetComponent<EnemyMovement>();
     }
@@ -78,6 +72,10 @@ public class ZombieHealth : MonoBehaviour
 
     private void Update()
     {
+        if (Random.value < Time.deltaTime * .2f)
+        {
+            GameController.instance.LiveSound(transform.position);
+        }
         switch (type)
         {
             default:
@@ -171,13 +169,25 @@ public class ZombieHealth : MonoBehaviour
                 break;
         }
 
+        float oldHealth = health;
+
         health = Mathf.Clamp(health - Mathf.Clamp(amount, 0f, Mathf.Infinity), 0f, maxHealth);
         UpdateHealthbar();
         if (!dead && health == 0f)
         {
             dead = true;
+
+            diedWithForce = amount * amount * amount / 50f / maxHealth * (1f + Mathf.InverseLerp(maxHealth, 0, health));
             OnDeath?.Invoke();
         }
         movement.Stun(.2f);
     }
+}
+
+public enum ZombieType
+{
+    Basic,
+    Regen,
+    Tough,
+    Fast
 }

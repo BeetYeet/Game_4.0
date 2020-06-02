@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
+using Tools;
 
 public class GunPickup : MonoBehaviour
 {
@@ -11,49 +12,94 @@ public class GunPickup : MonoBehaviour
     [SerializeField]
     private GameObject pickupText = null;
 
-    private void Start()
-    {
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player")
             return;
 
-        Drop drop = Get();
-        Inventory inv = PlayerController.player.GetComponent<Inventory>();
-        if (inv.arsenal.Contains(drop.weapon))
+        Inventory inventory = PlayerController.player.GetComponent<Inventory>();
+
+        List<Drop> owned = drops.ContainsWeapon(inventory.arsenal);
+        List<Drop> unowned = drops.DiscontainsWeapon(inventory.arsenal);
+
+        if (unowned.Count > 0 && Chance(.01f * unowned.Count))
         {
-            drop.weapon.ammo += drop.ammo;
-            Instantiate(pickupText).GetComponent<AmmoRise>().SetText($"+ammo: {drop.ammo}\n({drop.weapon.name})");
+            // drop new weapon
+            Drop drop = GetRandomWeaponFrom(unowned, true);
+            NewWeapon(drop.weapon, drop.GetAmmo(), inventory);
         }
         else
         {
-            if (Random.value <= drop.dropChance)
+            // drop ammo
+            if (unowned.Count == 0 || Chance(.6f))
             {
-                inv.arsenal.Add(drop.weapon);
-                drop.weapon.ammo = drop.weapon.baseAmmo + drop.ammo;
-                Instantiate(pickupText).GetComponent<AmmoRise>().SetText($"+{drop.weapon.name}\n(ammo: {drop.weapon.ammo})");
+                // for owned weapon
+                Drop drop = GetRandomWeaponFrom(owned, false);
+                MoreAmmo(drop.weapon, drop.GetAmmo());
+            }
+            else
+            {
+                // for unowned weapon
+                Drop drop = GetRandomWeaponFrom(unowned, false);
+                MoreAmmo(drop.weapon, drop.GetAmmo());
             }
         }
+
+        Destroy(gameObject);
     }
 
-    private Drop Get()
+    private bool Chance(float probability)
+    {
+        probability = Mathf.Clamp01(probability);
+
+        if (Random.value < probability)
+            return true;
+        return false;
+    }
+
+    private void MoreAmmo(WeaponInfo weapon, int amount)
+    {
+        weapon.ammo += amount;
+        Instantiate(pickupText, transform.position + Vector3.up * 2f, Quaternion.identity).GetComponent<AmmoRise>().SetText($"+ammo: {amount}\n({weapon.name})");
+    }
+
+    private void NewWeapon(WeaponInfo weapon, int extraAmmo, Inventory inv)
+    {
+        inv.arsenal.Add(weapon);
+        weapon.HardReset();
+        weapon.ammo += extraAmmo;
+        GameObject go = Instantiate(pickupText, transform.position + Vector3.up * 2f, Quaternion.identity);
+        go.GetComponent<AmmoRise>().SetText($"NEW WEAPON:\n{weapon.name}\n(ammo: {weapon.ammo})");
+        go.transform.localScale *= 1.5f;
+    }
+
+    private Drop GetRandomWeaponFrom(List<Drop> list, bool getWeaponDrop)
     {
         Drop highestDrop = null;
         float highestNum = -1f;
-
-        for (int i = 0; i < drops.Count; i++)
-        {
-            float newNum = drops[i].relativeChance * Random.value;
-            if (newNum > highestNum)
+        if (getWeaponDrop)
+            for (int i = 0; i < list.Count; i++)
             {
-                highestNum = newNum;
-                highestDrop = drops[i];
+                float newNum = list[i].relativeDropChance * Random.value;
+                if (newNum > highestNum)
+                {
+                    highestNum = newNum;
+                    highestDrop = list[i];
+                }
+            }
+        else
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                float newNum = list[i].relativeAmmoChance * Random.value;
+                if (newNum > highestNum)
+                {
+                    highestNum = newNum;
+                    highestDrop = list[i];
+                }
             }
         }
-
-        return highestDrop.Get();
+        return highestDrop;
     }
 }
 
@@ -65,16 +111,14 @@ public class Drop
     public int minAmmo = 20;
     public int maxAmmo = 40;
 
-    public float dropChance = .1f;
+    public float relativeDropChance = .1f;
+    public float relativeAmmoChance = 1f;
 
     [HideInInspector]
     public int ammo;
 
-    public Drop Get()
+    public int GetAmmo()
     {
-        ammo = Random.Range(minAmmo, maxAmmo);
-        return this;
+        return Random.Range(minAmmo, maxAmmo);
     }
-
-    public float relativeChance = 1f;
 }

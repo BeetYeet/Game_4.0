@@ -1,0 +1,5 @@
+95-100% Drop ammo
+ - 60% for existing weapon
+ - 40% for unowned weapon
+0-5% (1% per unowned weapon) Drop new weapon
+ - per weapon relative chance

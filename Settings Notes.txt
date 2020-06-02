@@ -1,5 +1,11 @@
+Master Volume
+Gun Volume
+Music Volume
+YOU DIED Volume
+Zombie Volume
+
 YOUDIED enabled --
 highscores deletable --
-difficulty
+difficulty --
 show controller keyboard --
 preload highscores after game --

@@ -25,6 +25,9 @@ public class GameController : MonoBehaviour
     private GameObject playingUI;
 
     [SerializeField]
+    private GameObject deathUI;
+
+    [SerializeField]
     private GameObject nameSubmitUI;
 
     [SerializeField]
@@ -38,6 +41,21 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private RectTransform controllerKeyboard = null;
+
+    [SerializeField]
+    private GameObject pauseUI = null;
+
+    public AudioHandler.AudioContext zombieLiveContext;
+    public List<string> zombieLiveSounds;
+
+    public AudioHandler.AudioContext zombieDieContext;
+    public List<string> zombieDieSounds;
+
+    public AudioHandler.AudioContext zombieNibbleContext;
+    public List<string> zombieNibbleSounds;
+
+    public AudioHandler.AudioContext zombieAttackContext;
+    public List<string> zombieAttackSounds;
 
     public int Score
     {
@@ -93,6 +111,9 @@ public class GameController : MonoBehaviour
     [Range(0f, 1f), SerializeField]
     private float healthRate = .5f;
 
+    [SerializeField]
+    private HighscoreEntry afterGameEntry = null;
+
     private void Awake()
     {
         if (instance != null)
@@ -106,12 +127,14 @@ public class GameController : MonoBehaviour
         if (!isHighscoreScene)
         {
             nameConfirmButton.onClick.AddListener(delegate { OnSubmit(nameInput.text); });
+            nameConfirmButton.onClick.AddListener(AudioHandler.Click);
             nameInput.onEndEdit.AddListener(OnSubmit);
 
             nameInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
             nameInput.onValidateInput += ValidateName;
 
             nameDiscardButton.onClick.AddListener(OnDiscard);
+            nameDiscardButton.onClick.AddListener(AudioHandler.Click);
 
             Time.timeScale = 1f;
         }
@@ -121,19 +144,87 @@ public class GameController : MonoBehaviour
 
         input = new MyInputSystem();
         input.PlayerActionControlls.Menu.performed += Menu_performed;
+        input.PlayerActionControlls.Restart.performed += Restart_performed;
     }
 
+    public void DieSound(Vector3 position)
+    {
+        string sound = zombieDieSounds[Random.Range(0, zombieDieSounds.Count)];
+        Sound(sound, position, zombieDieContext);
+    }
+
+    public void LiveSound(Vector3 position)
+    {
+        string sound = zombieLiveSounds[Random.Range(0, zombieLiveSounds.Count)];
+        Sound(sound, position, zombieLiveContext);
+    }
+
+    public void NibbleSound(Vector3 position)
+    {
+        string sound = zombieNibbleSounds[Random.Range(0, zombieNibbleSounds.Count)];
+        Sound(sound, position, zombieNibbleContext);
+    }
+
+    public void AttackSound(Vector3 position)
+    {
+        string sound = zombieAttackSounds[Random.Range(0, zombieAttackSounds.Count)];
+        Sound(sound, position, zombieAttackContext);
+    }
+
+    private void Sound(string name, Vector3 position, AudioHandler.AudioContext context)
+    {
+        if (HighscoreHandler.instance.transform.GetChild(0).gameObject.activeSelf)
+            return;
+        AudioHandler.AudioContext modifiedContext = context;
+        modifiedContext.volume *= SettingsHandler.cache.volume_master * SettingsHandler.cache.volume_zombie;
+        if (!playing)
+        {
+            modifiedContext.volume *= .3f;
+            modifiedContext.minPitch *= .85f;
+            modifiedContext.maxPitch *= .85f;
+        }
+        AudioHandler.PlaySound(name, modifiedContext, position);
+    }
+
+    // A button
+    private void Restart_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (!isHighscoreScene && playing && Time.timeScale == 0f)
+        {
+            // paused so we restart
+            SceneHandler.instance.LoadScene("Main Menu");
+        }
+        else if (!isHighscoreScene && !playing && deathUI.activeSelf)
+        {
+            StartCoroutine(LateNameSelect());
+        }
+    }
+
+    private IEnumerator LateNameSelect()
+    {
+        yield return null;
+        ShowNameSelect();
+    }
+
+    // B or MENU button
     private void Menu_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (playing)
+        if (!isHighscoreScene && playing)
         {
-            //TODO: pause menu
             if (Time.timeScale == 0f)
             {
+                // unpause
+                playingUI.SetActive(true);
+                pauseUI.SetActive(false);
                 Time.timeScale = 1f;
             }
             else
+            {
+                // pause
+                playingUI.SetActive(false);
+                pauseUI.SetActive(true);
                 Time.timeScale = 0f;
+            }
         }
     }
 
@@ -149,6 +240,8 @@ public class GameController : MonoBehaviour
 
     public void AddCharacter(string character)
     {
+        if (string.IsNullOrEmpty(character))
+            return;
         if (nameInput.text.Length < 6)
             nameInput.text += character[0];
     }
@@ -201,14 +294,15 @@ public class GameController : MonoBehaviour
     {
         kills++;
         score += 100f;
+        DieSound(pos);
 
-        if (Random.value < healthRate)
+        if (UnityEngine.Random.value < healthRate)
         {
-            Instantiate(healthBox, pos, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+            Instantiate(healthBox, pos, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f));
         }
-        else if (Random.value < ammoRate)
+        else if (UnityEngine.Random.value < ammoRate)
         {
-            Instantiate(ammoBox, pos, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+            Instantiate(ammoBox, pos, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f));
         }
     }
 
@@ -219,24 +313,31 @@ public class GameController : MonoBehaviour
         Time.timeScale = .2f;
         if (!debugMode && SettingsHandler.cache.youDiedEnabled)
         {
-            deathVideo = Instantiate(deathVideo);
+            deathVideo = Instantiate(deathVideo, transform);
+            deathVideo.transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().SetDirectAudioVolume(0, SettingsHandler.cache.volume_YOUDIED * SettingsHandler.cache.volume_master / 10f);
             StartCoroutine(FadeInScoreUI());
         }
-        ShowNameSelect();
+        ShowDeathUI();
+        time = Time.timeSinceLevelLoad;
+    }
+
+    private void ShowDeathUI()
+    {
+        playingUI.SetActive(false);
+        deathUI.SetActive(true);
     }
 
     private void ShowNameSelect()
     {
         GetScores();
-        time = Time.timeSinceLevelLoad;
-        playingUI.SetActive(false);
+        deathUI.SetActive(false);
         nameSubmitUI.SetActive(true);
+        afterGameEntry.Initialize(ScoreEntry.New(Score, "", SettingsHandler.cache.dificulty, time, kills), 0);
 
         if (SettingsHandler.cache.showControllerKeyboard)
         {
             controllerKeyboard.gameObject.SetActive(true);
             keyFirstSelected.Select();
-            keyFirstSelected.OnSelect(new BaseEventData(EventSystem.current));
         }
         else
             nameInput.Select();
@@ -251,20 +352,19 @@ public class GameController : MonoBehaviour
     private void OnSubmit(string name)
     {
         if (name == "" || name == null)
-            return; // TODO: tell user name cant be blank
+        {
+            // TODO: tell user name cant be blank
+            return;
+        }
         playerName = name;
-        ScoreEntry newScore = ScoreEntry.New(Score, playerName, SettingsHandler.cache.dificulty, time, kills);
-        AddScore(newScore);
-
-        highscores.Sort();
 
         if (SettingsHandler.cache.preloadHighscores)
         {
-            HighscoreHandler.instance.AddNew(newScore);
+            HighscoreHandler.instance.newest.SetNewName(playerName);
         }
 
         DisplayHighscores();
-        ResetLastTracker();
+        AddScore(ScoreEntry.New(Score, name, SettingsHandler.cache.dificulty, time, kills));
     }
 
     private void OnDiscard()
@@ -272,27 +372,41 @@ public class GameController : MonoBehaviour
         DisplayHighscores();
     }
 
-    private void ResetLastTracker()
-    {
-        highscores.ForEach(x => x.isLast = false);
-    }
-
     private void DisplayHighscores()
     {
         nameSubmitUI.SetActive(false);
         HighscoreHandler.instance.Enable();
 
-        if (!SettingsHandler.cache.preloadHighscores)
+        if (SettingsHandler.cache.preloadHighscores)
+        {
+            StartCoroutine(SnapToAfterPreload());
+        }
+        else
         {
             highscores.Sort();
             ReadInHighscores();
         }
     }
 
+    private IEnumerator SnapToAfterPreload()
+    {
+        while (SceneHandler.instance.haltTransitionIn > 0)
+            yield return null;
+        if (HighscoreHandler.instance.newest != null)
+        {
+            HighscoreHandler.instance.SnapTo((RectTransform)HighscoreHandler.instance.newest.transform);
+            HighscoreHandler.instance.newest.SetNewName(playerName);
+        }
+    }
+
     private void ReadInHighscores()
     {
+        ScoreEntry newScore = ScoreEntry.New(Score, "", SettingsHandler.cache.dificulty, time, kills);
+        highscores.Add(newScore);
+        highscores.Sort();
+        int index = highscores.FindIndex((x) => x.Equals(newScore));
         SceneHandler.instance.haltTransitionIn++;
-        HighscoreHandler.instance.Display();
+        HighscoreHandler.instance.Display(index);
         if (!SettingsHandler.cache.preloadHighscores)
             StartCoroutine(UpdateHighscoreProgress());
     }
@@ -307,6 +421,12 @@ public class GameController : MonoBehaviour
         }
         SceneHandler.instance.UpdateProgressDone();
         SceneHandler.instance.transition.StartTransitionIn();
+        if (!SettingsHandler.cache.preloadHighscores)
+            if (HighscoreHandler.instance.newest != null)
+            {
+                HighscoreHandler.instance.SnapTo((RectTransform)HighscoreHandler.instance.newest.transform);
+                HighscoreHandler.instance.newest.SetNewName(playerName);
+            }
     }
 
     public void GetScores()
@@ -326,7 +446,6 @@ public class GameController : MonoBehaviour
         numHighscores++;
         PlayerPrefs.SetInt("numHighscores", numHighscores);
         PlayerPrefs.Save();
-        highscores.Add(score);
         return;
     }
 

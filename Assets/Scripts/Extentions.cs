@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
+using Fighting;
 
 namespace Tools
 {
@@ -12,6 +14,33 @@ namespace Tools
         {
             left = (int)(l >> 32);
             right = (int)((l << 32) >> 32);
+        }
+
+        public static Vector3 Mult(this Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+        }
+
+        public static List<Drop> DiscontainsWeapon(this List<Drop> a, List<WeaponInfo> b)
+        {
+            return a.Where(ea => !b.Any(eb => ea.weapon.Equals(eb))).ToList();
+        }
+
+        public static List<Drop> ContainsWeapon(this List<Drop> a, List<WeaponInfo> b)
+        {
+            return a.Where(ea => b.Any(eb => ea.weapon.Equals(eb))).ToList();
+        }
+
+        public static void GetSnapToPositionToBringChildIntoView(this ScrollRect instance, RectTransform child)
+        {
+            Canvas.ForceUpdateCanvases();
+            Vector2 viewportLocalPosition = instance.viewport.localPosition;
+            Vector2 childLocalPosition = child.localPosition;
+            Vector2 result = new Vector2(
+                0 - (viewportLocalPosition.x + childLocalPosition.x),
+                0 - (viewportLocalPosition.y + childLocalPosition.y)
+            );
+            instance.content.localPosition = result;
         }
     }
 

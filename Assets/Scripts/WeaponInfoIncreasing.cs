@@ -35,22 +35,24 @@ namespace Fighting
 
             cooldown = Mathf.Lerp(cooldown, cooldown * minCooldownFactor, Mathf.Pow(currentCooldownProgress, 1f / bulletContributionCurvature));
 
-            Debug.Log($"Heat: {currentCooldownProgress}\nCurrently at a firerate of: {1f / cooldown}");
+            // Debug.Log($"Heat: {currentCooldownProgress}\nCurrently at a firerate of: {1f / cooldown}");
             currentCooldown = cooldown;
         }
 
-        internal override void ResetUpdate()
+        internal override void Holster()
         {
-            base.ResetUpdate();
+            base.Holster();
             currentCooldownProgress -= Time.deltaTime / cooldownDecayTime;
             if (currentCooldownProgress < 0f)
+            {
                 currentCooldownProgress = 0f;
-            Debug.Log($"Heat: {currentCooldownProgress}");
+            }
+            // Debug.Log($"Heat: {currentCooldownProgress}");
         }
 
-        public override void Reset()
+        public override void HardReset()
         {
-            base.Reset();
+            base.HardReset();
             currentCooldownProgress = 0f;
         }
 

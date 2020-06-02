@@ -65,14 +65,33 @@ public class Bullet : MonoBehaviour
         if (zombieHealth == null)
             return;
 
-        float health = zombieHealth.Health;
+        float health = 0;
+        switch (SettingsHandler.cache.dificulty)
+        {
+            case Difficulty.Easy:
+                health = zombieHealth.Health / 1.5f;
+                break;
+
+            case Difficulty.Hard:
+                health = zombieHealth.Health / .9f;
+                break;
+
+            case Difficulty.Extreme:
+                health = zombieHealth.Health / .8f;
+                break;
+
+            default:
+                health = zombieHealth.Health;
+                break;
+        }
+
         armorPenetration = Mathf.Clamp(armorPenetration - (kinetic ? zombieHealth.Armor / 2f : zombieHealth.Armor), 0, Mathf.Infinity);
         zombieHealth.Damage(damage + armorPenetration);
         damage -= Mathf.Clamp(health - armorPenetration, 0f, Mathf.Infinity);
         if (damage > 0f)
-            if(debug) Debug.Log("Bullet Pierced");
-        else
-            if(debug) Debug.Log("Bullet Bounced");
+            if (debug) Debug.Log("Bullet Pierced");
+            else
+            if (debug) Debug.Log("Bullet Bounced");
     }
 
     private void Decay()

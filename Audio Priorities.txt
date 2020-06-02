@@ -1,0 +1,6 @@
+Music: 0
+Menu Buttons: 10
+Default: 128
+Gun Shots: 130
+Casings: 140
+Zombie Sounds: 150

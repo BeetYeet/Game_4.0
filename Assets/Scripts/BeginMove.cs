@@ -23,6 +23,7 @@ public class BeginMove : MonoBehaviour
         agent = transform.parent.GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         StartCoroutine(WaitForSummon());
+        GameController.instance.LiveSound(transform.position);
     }
 
     private IEnumerator WaitForSummon()

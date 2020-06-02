@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MainMenuButtons : MonoBehaviour
 {
@@ -19,13 +20,35 @@ public class MainMenuButtons : MonoBehaviour
     private Button exitButton = null;
 
     [SerializeField]
+    private Button instructionsButton = null;
+
+    [SerializeField]
     private string playSceneName = "MainScene";
 
     [SerializeField]
-    private string HighscoreSceneName = "Highscores Scene";
+    private string highscoreSceneName = "Highscores Scene";
+
+    [SerializeField]
+    private string instructionsSceneName = "Instrucions Scene";
 
     [SerializeField]
     private RectTransform settings = null;
+
+    private void Awake()
+    {
+        StartCoroutine(SetOnHover());
+    }
+
+    private IEnumerator SetOnHover()
+    {
+        yield return null;
+        yield return null;
+        EventTrigger et = playButton.GetComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Select;
+        entry.callback.AddListener(delegate { MenuHover(); });
+        et.triggers.Add(entry);
+    }
 
     private void Start()
     {
@@ -33,6 +56,22 @@ public class MainMenuButtons : MonoBehaviour
         scoresButton.onClick.AddListener(OnScoresPressed);
         settingsButton.onClick.AddListener(OnSettingsPressed);
         exitButton.onClick.AddListener(OnExitPressed);
+        instructionsButton.onClick.AddListener(OnInstructionsPressed);
+    }
+
+    public void OnInstructionsPressed()
+    {
+        SceneHandler.instance.LoadScene(instructionsSceneName);
+    }
+
+    public void MenuHover()
+    {
+        AudioHandler.Click2();
+    }
+
+    public void MenuClick()
+    {
+        AudioHandler.Click();
     }
 
     private void OnPlayPressed()
@@ -42,7 +81,7 @@ public class MainMenuButtons : MonoBehaviour
 
     private void OnScoresPressed()
     {
-        SceneHandler.instance.LoadScene(HighscoreSceneName);
+        SceneHandler.instance.LoadScene(highscoreSceneName);
     }
 
     private void OnSettingsPressed()

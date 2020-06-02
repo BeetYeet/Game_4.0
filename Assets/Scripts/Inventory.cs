@@ -16,6 +16,12 @@ public class Inventory : MonoBehaviour
 
     private TextMeshProUGUI weaponNameUI;
 
+    [SerializeField]
+    private Color weaponUsableColor = Color.yellow;
+
+    [SerializeField]
+    private Color weaponUnusableColor = Color.red;
+
     private void Awake()
     {
         if (weaponHandler == null)
@@ -40,14 +46,13 @@ public class Inventory : MonoBehaviour
 
         weaponHandler.weapon.OnFire += Weapon_OnFire;
         UpdateWeaponName();
+
+        arsenal.ForEach(x => x.HardReset());
     }
 
     private void Weapon_OnFire()
     {
-        if (weaponHandler.weapon.ammo <= 0)
-        {
-            arsenal.Remove(weaponHandler.weapon);
-        }
+        // do nothing, for now
     }
 
     private void Update()
@@ -78,8 +83,17 @@ public class Inventory : MonoBehaviour
     {
         if (weaponNameUI == null)
             return;
-
-        weaponNameUI.text = $"{weaponHandler.weapon.name} ({weaponHandler.weapon.ammo})";
+        weaponHandler.weapon.CheckAmmo();
+        if (weaponHandler.weapon.usable)
+        {
+            weaponNameUI.text = $"{weaponHandler.weapon.name} ({weaponHandler.weapon.ammo})";
+            weaponNameUI.color = weaponUsableColor;
+        }
+        else
+        {
+            weaponNameUI.text = $"{weaponHandler.weapon.name} (No Ammo)";
+            weaponNameUI.color = weaponUnusableColor;
+        }
     }
 
     public void OnCycleWeaponLeft(InputAction.CallbackContext ctx)

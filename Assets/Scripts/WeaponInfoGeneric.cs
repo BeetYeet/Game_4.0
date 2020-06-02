@@ -12,7 +12,7 @@ namespace Fighting
 
         internal override void CalculateCooldown()
         {
-            currentCooldown = baseWeaponCooldown * (1 + Random.Range(-firerateVariance, firerateVariance)); ;
+            currentCooldown = baseWeaponCooldown * (1 + Random.Range(-firerateVariance, firerateVariance));
         }
 
         internal override void Fire(float overshotTime)
